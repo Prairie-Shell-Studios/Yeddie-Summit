@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-/Yediie Summit/[Ll]ibrary/
-/Yediie Summit/[Tt]emp/
-/Yediie Summit/[Oo]bj/
-/Yediie Summit/[Bb]uild/
-/Yediie Summit/[Bb]uilds/
-/Yediie Summit/[Ll]ogs/
-/Yediie Summit/[Mm]emoryCaptures/
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
