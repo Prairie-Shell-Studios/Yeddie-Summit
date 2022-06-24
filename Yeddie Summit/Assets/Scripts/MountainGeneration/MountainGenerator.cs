@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PrairieShellStudios.MountainGeneration
@@ -20,9 +21,9 @@ namespace PrairieShellStudios.MountainGeneration
         [SerializeField] [Tooltip("Range for the max Y-Value")] private Vector2 heightRange = new Vector2(10f, 10f);
 
         [Header("Mesh Resolution")]
-        [SerializeField] [Tooltip("Number of Bezier Surfaces")] 
+        [SerializeField] [Min(1)] [Tooltip("Number of Bezier Surfaces")] 
         private int mountainResolution = 1;
-        [SerializeField] [Tooltip("Max number of Segments per Bezier Surface")] 
+        [SerializeField] [Min(1)] [Tooltip("Max number of Segments per Bezier Surface")] 
         private int surfaceResolution = 10;
 
         [Header("Mesh Effects")]
@@ -33,8 +34,9 @@ namespace PrairieShellStudios.MountainGeneration
         public float pointSize = 0.2f;
 
         private Mesh mesh;
-        private Vector3[] controlPoints;
-        private Tuple<Vector3[], int[]> meshInfo;
+        private Vector3[][] controlPoints;
+        private List<Vector3> vertices;
+        private List<int> triangles;
 
         #endregion
 
@@ -65,23 +67,16 @@ namespace PrairieShellStudios.MountainGeneration
 
         public void GenerateMountain()
         {
-            mesh = new Mesh();
-            GetComponent<MeshFilter>().mesh = mesh;
+            Init();
 
             CreateMountain();
 
-            if (meshInfo != null)
+            if (hasNoise)
             {
-                if (hasNoise)
-                {
-                    AddNoise();
-                }
-                UpdateMesh();
+                AddNoise();
             }
-            else
-            {
-                Debug.LogWarning("No meshInfo could be found when updating mesh.", gameObject);
-            }
+
+            UpdateMesh();
         }
 
         private void CreateMountain()
@@ -94,7 +89,17 @@ namespace PrairieShellStudios.MountainGeneration
             int xRes = width >= length ? surfaceResolution : Mathf.CeilToInt(width / length * surfaceResolution);
             int zRes = width <= length ? surfaceResolution : Mathf.CeilToInt(length / width * surfaceResolution);
 
-            meshInfo = bezierGen.GenerateSurface(controlPoints, xRes, zRes);
+            int numSurfaces = (int) Mathf.Pow(mountainResolution, 2);
+            int jump = (zRes + 1) * (xRes + 1);
+
+            for (int surface = 0, offset = 0; surface < numSurfaces; surface++)
+            {
+                Tuple<Vector3[], int[]> meshInfo = bezierGen.GenerateSurface(controlPoints[surface], xRes, zRes, offset);
+                vertices.AddRange(meshInfo.Item1);
+                triangles.AddRange(meshInfo.Item2);
+
+                offset += jump;
+            }
         }
 
 
@@ -102,8 +107,8 @@ namespace PrairieShellStudios.MountainGeneration
         {
             mesh.Clear();
 
-            mesh.vertices = meshInfo.Item1;
-            mesh.triangles = meshInfo.Item2;
+            mesh.vertices = vertices.ToArray();
+            mesh.triangles = triangles.ToArray();
 
             mesh.RecalculateNormals();
         }
@@ -114,12 +119,28 @@ namespace PrairieShellStudios.MountainGeneration
 
         private void AddNoise()
         {
-            for (int vert = 0; vert < meshInfo.Item1.Length; vert++)
+            for (int vert = 0; vert < vertices.Count; vert++)
             {
-                Vector3 vertex = meshInfo.Item1[vert];
+                Vector3 vertex = vertices[vert];
                 vertex.y += Mathf.PerlinNoise(vertex.x, vertex.z);
-                meshInfo.Item1[vert] = vertex;
+                vertices[vert] = vertex;
             }
+        }
+
+        #endregion
+
+        #region initialization
+
+        private void Init()
+        {
+            if (mesh == null)
+            {
+                mesh = new Mesh();
+                GetComponent<MeshFilter>().mesh = mesh;
+            }
+
+            vertices = new List<Vector3>();
+            triangles = new List<int>();
         }
 
         #endregion

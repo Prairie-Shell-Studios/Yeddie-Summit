@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 328734967397038641}
   - component: {fileID: 328734967397038646}
   - component: {fileID: 328734967397038647}
-  - component: {fileID: 328734967397038640}
   m_Layer: 0
   m_Name: MountainGenerator
   m_TagString: Untagged
@@ -84,23 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &328734967397038640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328734967397038642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d3ede5023b831e42b0d289d1c9ac460, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 10
-  depth: 10
-  height: 10
-  mountainResolution: 1
-  surfaceResolution: 20
-  hasNoise: 0
-  showBounds: 1
-  pointSize: 0.2
