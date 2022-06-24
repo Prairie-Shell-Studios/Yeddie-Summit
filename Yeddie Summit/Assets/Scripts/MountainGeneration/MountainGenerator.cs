@@ -9,6 +9,11 @@ namespace PrairieShellStudios.MountainGeneration
 
         #region fields
 
+        [Header("Generation Options")]
+        [SerializeField]
+        [Tooltip("Whether not the mesh should be recomputed in Start method")]
+        private bool generateOnStart = false;
+
         [Header("Mountain Dimensions")]
         [SerializeField] [Tooltip("Max X-Value")] private float width = 10f;
         [SerializeField] [Tooltip("Max Z-Value")] private float length = 10f;
@@ -37,6 +42,29 @@ namespace PrairieShellStudios.MountainGeneration
 
         void Start()
         {
+            if (generateOnStart)
+            {
+                GenerateMountain();
+            }
+        }
+
+        void OnDrawGizmos()
+        {
+            if (showBounds)
+            {
+                Gizmos.DrawSphere(transform.position + new Vector3(-width, 0f, -length), pointSize);
+                Gizmos.DrawSphere(transform.position + new Vector3(-width, 0f, length), pointSize);
+                Gizmos.DrawSphere(transform.position + new Vector3(width, 0f, -length), pointSize);
+                Gizmos.DrawSphere(transform.position + new Vector3(width, 0f, length), pointSize);
+            }
+        }
+
+        #endregion
+
+        #region mesh
+
+        public void GenerateMountain()
+        {
             mesh = new Mesh();
             GetComponent<MeshFilter>().mesh = mesh;
 
@@ -55,21 +83,6 @@ namespace PrairieShellStudios.MountainGeneration
                 Debug.LogWarning("No meshInfo could be found when updating mesh.", gameObject);
             }
         }
-
-        void OnDrawGizmos()
-        {
-            if (showBounds)
-            {
-                Gizmos.DrawSphere(transform.position + new Vector3(-width, 0f, -length), pointSize);
-                Gizmos.DrawSphere(transform.position + new Vector3(-width, 0f, length), pointSize);
-                Gizmos.DrawSphere(transform.position + new Vector3(width, 0f, -length), pointSize);
-                Gizmos.DrawSphere(transform.position + new Vector3(width, 0f, length), pointSize);
-            }
-        }
-
-        #endregion
-
-        #region mesh
 
         private void CreateMountain()
         {
