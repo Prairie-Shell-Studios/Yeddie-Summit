@@ -37,7 +37,7 @@ namespace PrairieShellStudios.MountainGeneration
         /// <returns>A tuple that contains the vertices in Item1 and triangles in Item2.</returns>
         public Tuple<Vector3[], int[]> GenerateSurface(Vector3[] controlPoints, int uResolution, int vResolution)
         {
-            if (controlPoints.Length == BezierControlPoints.CP_SIZE)
+            if (controlPoints.Length == BezierControlPointGenerator.CONTROL_POINT_SIZE)
             {
                 Vector3[] vertices = GenerateVertices(controlPoints, uResolution, vResolution);
                 int[] triangles = GenerateTriangles(uResolution, vResolution);
@@ -61,7 +61,7 @@ namespace PrairieShellStudios.MountainGeneration
         /// <returns>A tuple that contains the vertices in Item1 and triangles in Item2.</returns>
         public Tuple<Vector3[], int[]> GenerateSurface(Vector3[] controlPoints, int uResolution, int vResolution, int offset)
         {
-            if (controlPoints.Length == BezierControlPoints.CP_SIZE)
+            if (controlPoints.Length == BezierControlPointGenerator.CONTROL_POINT_SIZE)
             {
                 Vector3[] vertices = GenerateVertices(controlPoints, uResolution, vResolution);
                 int[] triangles = GenerateTriangles(uResolution, vResolution, offset);

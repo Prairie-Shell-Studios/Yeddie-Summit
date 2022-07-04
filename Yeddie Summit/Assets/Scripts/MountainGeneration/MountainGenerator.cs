@@ -28,6 +28,8 @@ namespace PrairieShellStudios.MountainGeneration
 
         [Header("Mesh Effects")]
         public bool hasNoise = false;
+        [SerializeField] [Min(0.01f)] private float scale = 1f;
+        [SerializeField] private bool clampedEdges = false;
 
         [Header("Boundary Gizmos")]
         public bool showBounds = false;
@@ -119,14 +121,34 @@ namespace PrairieShellStudios.MountainGeneration
 
         private void AddNoise()
         {
+            // randomize sample position
+            float[] offset = {UnityEngine.Random.Range(0f, 999999f), UnityEngine.Random.Range(0f, 999999f)};
+
             for (int vert = 0; vert < vertices.Count; vert++)
             {
                 Vector3 vertex = vertices[vert];
-                vertex.y += Mathf.PerlinNoise(vertex.x, vertex.z);
-                vertices[vert] = vertex;
+
+                if (!IsEdge(vertex))
+                {
+                    vertex.y += Mathf.PerlinNoise((vertex.x + offset[0]) * scale, (vertex.z + offset[1]) * scale);
+                    vertices[vert] = vertex;
+                }
             }
         }
 
+        private bool IsEdge(Vector3 vertex)
+        {
+            if (clampedEdges && vertex != null)
+            {
+                return vertex.x == transform.position.x - width || vertex.x == transform.position.x + width ||
+                    vertex.z == transform.position.z - length || vertex.z == transform.position.z + length;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
         #endregion
 
         #region initialization
