@@ -29,6 +29,7 @@ namespace PrairieShellStudios.MountainGeneration
         [Header("Mesh Effects")]
         public bool hasNoise = false;
         [SerializeField] [Min(0.01f)] private float scale = 1f;
+        [SerializeField] [Min(0.01f)] private float noiseImpact = 1f;
         [SerializeField] private bool clampedEdges = false;
 
         [Header("Boundary Gizmos")]
@@ -130,7 +131,7 @@ namespace PrairieShellStudios.MountainGeneration
 
                 if (!IsEdge(vertex))
                 {
-                    vertex.y += Mathf.PerlinNoise((vertex.x + offset[0]) * scale, (vertex.z + offset[1]) * scale);
+                    vertex.y += (noiseImpact * Mathf.PerlinNoise((vertex.x + offset[0]) * scale, (vertex.z + offset[1]) * scale));
                     vertices[vert] = vertex;
                 }
             }
