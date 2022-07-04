@@ -24,6 +24,7 @@ namespace PrairieShellStudios.MountainGeneration
 
         public BezierControlPointGenerator()
         {
+            // Does nothing so far
         }
 
         #endregion
@@ -31,14 +32,14 @@ namespace PrairieShellStudios.MountainGeneration
         #region control point generation
 
         /// <summary>
-        /// 
+        /// Generates all the control points that will be used to define the mountain.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="maxX"></param>
-        /// <param name="maxY"></param>
-        /// <param name="maxZ"></param>
-        /// <param name="resolution"></param>
-        /// <returns></returns>
+        /// <param name="origin">The center position of the mountain.</param>
+        /// <param name="maxX">The largest X position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxY">The largest Y position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxZ">The largest Z position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="resolution">Determines the number of Bezier surfaces that the mountain is made up of.</param>
+        /// <returns>A 2D array that contains the control points that define the mountain.</returns>
         public Vector3[][] GenerateControlPoints(Vector3 origin, float maxX, float maxY, float maxZ, int resolution)
         {
             // get control points that determine the generated mountain shape
@@ -57,12 +58,13 @@ namespace PrairieShellStudios.MountainGeneration
 
         /// <summary>
         /// Compute the control points that determine the overall mountain shape.
+        /// There will always be 16 control points generated.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="maxX"></param>
-        /// <param name="maxY"></param>
-        /// <param name="maxZ"></param>
-        /// <returns></returns>
+        /// <param name="origin">The center position of the mountain.</param>
+        /// <param name="maxX">The largest X position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxY">The largest Y position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxZ">The largest Z position (relative to the origin) that the mountain can reach.</param>
+        /// <returns>An array of control points that defines the overall mountain shape.</returns>
         private BezierControlPoints GenerateMainControlPoints(Vector3 origin, float maxX, float maxY, float maxZ)
         {
             BezierControlPoints points = new BezierControlPoints();
@@ -100,9 +102,12 @@ namespace PrairieShellStudios.MountainGeneration
         }
 
         /// <summary>
-        /// 
+        /// Generates the number of control points needed to define the mountain with the specified
+        /// number of Bezier Surfaces.
         /// </summary>
-        /// <param name="resolution"></param>
+        /// <param name="controlPoints">The control points that define the overall shape of the mountain.</param>
+        /// <param name="resolution">Defines the number of Bezier patches to compute.</param>
+        /// <returns>An array of all the control points that define each Bezier patch which make up the mountains.</returns>
         private Vector3[] GenerateBezierSurface(BezierControlPoints controlPoints, int resolution)
         {
             BezierSurfaceGenerator gen = new BezierSurfaceGenerator();
@@ -114,11 +119,11 @@ namespace PrairieShellStudios.MountainGeneration
         }
 
         /// <summary>
-        /// 
+        /// Divides up the surface into Bezier patches.
         /// </summary>
-        /// <param name="resolution"></param>
-        /// <param name="vertices"></param>
-        /// <returns></returns>
+        /// <param name="resolution">The number of Bezier patches to generate (squared).</param>
+        /// <param name="vertices">The vertices of the main control points.</param>
+        /// <returns>The control points for each Bezier patch generated.</returns>
         private Vector3[][] ParseSurface(int resolution, Vector3[] vertices)
         {
             int numSurfaces = (int)Mathf.Pow(resolution, 2);
@@ -167,7 +172,7 @@ namespace PrairieShellStudios.MountainGeneration
         /// <returns></returns>
         public int[] ComputeJumps(int resolution)
         {
-            int[] jumps = new int[3];
+            int[] jumps = resolution <= 3 ? new int[3] : new int[resolution];
 
             for (int j = 0; j < jumps.Length; j++)
             {
