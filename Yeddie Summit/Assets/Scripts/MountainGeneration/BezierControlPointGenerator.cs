@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PrairieShellStudios.MountainGeneration
@@ -15,13 +13,9 @@ namespace PrairieShellStudios.MountainGeneration
 
         //private BezierControlPoints controlPoints;
         private static readonly int[] peakRange = new int[] { 5, 6, 9, 10 };
+        public static readonly int CONTROL_POINT_SIZE = 16;
         private const int MIN_DEN = 2;
         private const int MAX_DEN = 7;
-
-        #endregion
-
-        #region properties
-        //public BezierControlPoints ControlPoints { get => controlPoints; }
 
         #endregion
 
@@ -29,7 +23,7 @@ namespace PrairieShellStudios.MountainGeneration
 
         public BezierControlPointGenerator()
         {
-            //controlPoints = new BezierControlPoints();
+            // Does nothing so far
         }
 
         #endregion
@@ -37,18 +31,19 @@ namespace PrairieShellStudios.MountainGeneration
         #region control point generation
 
         /// <summary>
-        /// 
+        /// Generates all the control points that will be used to define the mountain.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="maxX"></param>
-        /// <param name="maxY"></param>
-        /// <param name="maxZ"></param>
-        /// <param name="resolution"></param>
-        /// <returns></returns>
-        public Vector3[] GenerateControlPoints(Vector3 origin, float maxX, float maxY, float maxZ, int resolution)
+        /// <param name="origin">The center position of the mountain.</param>
+        /// <param name="maxX">The largest X position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxY">The largest Y position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxZ">The largest Z position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="resolution">Determines the number of Bezier surfaces that the mountain is made up of.</param>
+        /// <returns>A 2D array that contains the control points that define the mountain.</returns>
+        public Vector3[][] GenerateControlPoints(Vector3 origin, float maxX, float maxY, float maxZ, int resolution)
         {
             // get control points that determine the generated mountain shape
-            BezierControlPoints controlPoints = GenerateMainControlPoints(origin, maxX, maxY, maxZ);
+            //BezierControlPoints controlPoints = GenerateMainControlPoints(origin, maxX, maxY, maxZ);
+            Vector3[] controlPoints = GenerateMainControlPoints(origin, maxX, maxY, maxZ);
 
             // generate bezier surface that defines the generated mountain shape
             Vector3[] bezierVertices = GenerateBezierSurface(controlPoints, resolution);
@@ -56,81 +51,86 @@ namespace PrairieShellStudios.MountainGeneration
             // parse bezier surface into control points
             Vector3[][] finalControlPoints = ParseSurface(resolution, bezierVertices);
 
-            return controlPoints.ControlPoints;
+            return finalControlPoints;
         }
 
         #region helpers
 
         /// <summary>
         /// Compute the control points that determine the overall mountain shape.
+        /// There will always be 16 control points generated.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="maxX"></param>
-        /// <param name="maxY"></param>
-        /// <param name="maxZ"></param>
-        /// <returns></returns>
-        private BezierControlPoints GenerateMainControlPoints(Vector3 origin, float maxX, float maxY, float maxZ)
+        /// <param name="origin">The center position of the mountain.</param>
+        /// <param name="maxX">The largest X position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxY">The largest Y position (relative to the origin) that the mountain can reach.</param>
+        /// <param name="maxZ">The largest Z position (relative to the origin) that the mountain can reach.</param>
+        /// <returns>An array of control points that defines the overall mountain shape.</returns>
+        private Vector3[] GenerateMainControlPoints(Vector3 origin, float maxX, float maxY, float maxZ)
         {
-            BezierControlPoints points = new BezierControlPoints();
+            Vector3[] points = new Vector3[CONTROL_POINT_SIZE];
 
             // randomly select the peak points
-            int peakPoint = peakRange[Random.Range(0, peakRange.Length)];
+            int peakPoint = peakRange[UnityEngine.Random.Range(0, peakRange.Length)];
 
             // generate the control points
-            points.ControlPoints[0] = origin + new Vector3(-maxX, 0f, -maxZ);
-            points.ControlPoints[1] = origin + new Vector3(-maxX, 0f, -maxZ / 2);
-            points.ControlPoints[2] = origin + new Vector3(-maxX, 0f, maxZ / 2);
-            points.ControlPoints[3] = origin + new Vector3(-maxX, 0f, maxZ);
-            points.ControlPoints[4] = origin + new Vector3(-maxX / 2, 0f, -maxZ);
+            points[0] = origin + new Vector3(-maxX, 0f, -maxZ);
+            points[1] = origin + new Vector3(-maxX, 0f, -maxZ / 2);
+            points[2] = origin + new Vector3(-maxX, 0f, maxZ / 2);
+            points[3] = origin + new Vector3(-maxX, 0f, maxZ);
+            points[4] = origin + new Vector3(-maxX / 2, 0f, -maxZ);
 
-            points.ControlPoints[5] = peakPoint == 5 ? 
-                origin + new Vector3(-maxX / 2, maxY, -maxZ / 2) : origin + new Vector3(-maxX / 2, maxY / Random.Range(MIN_DEN, MAX_DEN), -maxZ / 2);
-            points.ControlPoints[6] = peakPoint == 6 ? 
-                origin + new Vector3(-maxX / 2, maxY, maxZ / 2) : origin + new Vector3(-maxX / 2, maxY / Random.Range(MIN_DEN, MAX_DEN), maxZ / 2); 
+            points[5] = peakPoint == 5 ? 
+                origin + new Vector3(-maxX / 2, maxY, -maxZ / 2) : origin + new Vector3(-maxX / 2, maxY / UnityEngine.Random.Range(MIN_DEN, MAX_DEN), -maxZ / 2);
+            points[6] = peakPoint == 6 ? 
+                origin + new Vector3(-maxX / 2, maxY, maxZ / 2) : origin + new Vector3(-maxX / 2, maxY / UnityEngine.Random.Range(MIN_DEN, MAX_DEN), maxZ / 2); 
 
-            points.ControlPoints[7] = origin + new Vector3(-maxX / 2, 0f, maxZ);
-            points.ControlPoints[8] = origin + new Vector3(maxX / 2, 0f, -maxZ);
+            points[7] = origin + new Vector3(-maxX / 2, 0f, maxZ);
+            points[8] = origin + new Vector3(maxX / 2, 0f, -maxZ);
 
-            points.ControlPoints[9] = peakPoint == 9 ?
-                origin + new Vector3(maxX / 2, maxY, -maxZ / 2) : origin + new Vector3(maxX / 2, maxY / Random.Range(MIN_DEN, MAX_DEN), -maxZ / 2);
-            points.ControlPoints[10] = peakPoint == 10 ?
-                origin + new Vector3(maxX / 2, maxY, maxZ / 2) : origin + new Vector3(maxX / 2, maxY / Random.Range(MIN_DEN, MAX_DEN), maxZ / 2);
+            points[9] = peakPoint == 9 ?
+                origin + new Vector3(maxX / 2, maxY, -maxZ / 2) : origin + new Vector3(maxX / 2, maxY / UnityEngine.Random.Range(MIN_DEN, MAX_DEN), -maxZ / 2);
+            points[10] = peakPoint == 10 ?
+                origin + new Vector3(maxX / 2, maxY, maxZ / 2) : origin + new Vector3(maxX / 2, maxY / UnityEngine.Random.Range(MIN_DEN, MAX_DEN), maxZ / 2);
 
-            points.ControlPoints[11] = origin + new Vector3(maxX / 2, 0f, maxZ);
-            points.ControlPoints[12] = origin + new Vector3(maxX, 0f, -maxZ);
-            points.ControlPoints[13] = origin + new Vector3(maxX, 0f, -maxZ / 2);
-            points.ControlPoints[14] = origin + new Vector3(maxX, 0f, maxZ / 2);
-            points.ControlPoints[15] = origin + new Vector3(maxX, 0f, maxZ);
+            points[11] = origin + new Vector3(maxX / 2, 0f, maxZ);
+            points[12] = origin + new Vector3(maxX, 0f, -maxZ);
+            points[13] = origin + new Vector3(maxX, 0f, -maxZ / 2);
+            points[14] = origin + new Vector3(maxX, 0f, maxZ / 2);
+            points[15] = origin + new Vector3(maxX, 0f, maxZ);
 
             return points;
         }
 
         /// <summary>
-        /// 
+        /// Generates the number of control points needed to define the mountain with the specified
+        /// number of Bezier Surfaces.
         /// </summary>
-        /// <param name="resolution"></param>
-        private Vector3[] GenerateBezierSurface(BezierControlPoints controlPoints, int resolution)
+        /// <param name="controlPoints">The control points that define the overall shape of the mountain.</param>
+        /// <param name="resolution">Defines the number of Bezier patches to compute.</param>
+        /// <returns>An array of all the control points that define each Bezier patch which make up the mountains.</returns>
+        private Vector3[] GenerateBezierSurface(Vector3[] controlPoints, int resolution)
         {
             BezierSurfaceGenerator gen = new BezierSurfaceGenerator();
             int surfaceResolution = 3 * resolution;
 
-            Tuple<Vector3[], int[]> surfaceInfo = gen.GenerateSurface(controlPoints.ControlPoints, surfaceResolution, surfaceResolution);
+            Tuple<Vector3[], int[]> surfaceInfo = gen.GenerateSurface(controlPoints, surfaceResolution, surfaceResolution);
 
             return surfaceInfo.Item1;
         }
 
         /// <summary>
-        /// 
+        /// Divides up the surface into Bezier patches.
         /// </summary>
-        /// <param name="resolution"></param>
-        /// <param name="vertices"></param>
-        /// <returns></returns>
+        /// <param name="resolution">The number of Bezier patches to generate (squared).</param>
+        /// <param name="vertices">The vertices of the main control points.</param>
+        /// <returns>The control points for each Bezier patch generated.</returns>
         private Vector3[][] ParseSurface(int resolution, Vector3[] vertices)
         {
-            Vector3[][] controlPoints = new Vector3[resolution][];
+            int numSurfaces = (int)Mathf.Pow(resolution, 2);
+            Vector3[][] controlPoints = new Vector3[numSurfaces][];
             int[] jumps = ComputeJumps(resolution);
 
-            for (int surf = 0, vert = 0, col = 0; surf < resolution; surf++)
+            for (int surf = 0, vert = 0, col = 0; surf < numSurfaces; surf++)
             {
                 controlPoints[surf] = new Vector3[16];
 
@@ -170,9 +170,9 @@ namespace PrairieShellStudios.MountainGeneration
         /// </summary>
         /// <param name="resolution"></param>
         /// <returns></returns>
-        private int[] ComputeJumps(int resolution)
+        public int[] ComputeJumps(int resolution)
         {
-            int[] jumps = new int[3];
+            int[] jumps = resolution <= 3 ? new int[3] : new int[resolution];
 
             for (int j = 0; j < jumps.Length; j++)
             {
@@ -182,7 +182,7 @@ namespace PrairieShellStudios.MountainGeneration
                 }
                 else
                 {
-                    jumps[j] = (j + 1) * jumps[j];
+                    jumps[j] = (j + 1) * jumps[0];
                 }
             }
 

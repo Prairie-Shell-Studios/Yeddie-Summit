@@ -37,10 +37,34 @@ namespace PrairieShellStudios.MountainGeneration
         /// <returns>A tuple that contains the vertices in Item1 and triangles in Item2.</returns>
         public Tuple<Vector3[], int[]> GenerateSurface(Vector3[] controlPoints, int uResolution, int vResolution)
         {
-            if (controlPoints.Length == BezierControlPoints.CP_SIZE)
+            if (controlPoints.Length == BezierControlPointGenerator.CONTROL_POINT_SIZE)
             {
                 Vector3[] vertices = GenerateVertices(controlPoints, uResolution, vResolution);
                 int[] triangles = GenerateTriangles(uResolution, vResolution);
+
+                return new Tuple<Vector3[], int[]>(vertices, triangles);
+            }
+            else
+            {
+                Debug.LogWarning("The control points array must be 16 in size to generate a Bezier Surface.");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Generates the vertices and triangles needed to input into a mesh to create a bezier surface.
+        /// For each triangle, their index will be increased by indexOffset.
+        /// </summary>
+        /// <param name="controlPoints">User defined points that will define the shape of the bezier surface. Must be 16 in length.</param>
+        /// <param name="uResolution">The number of line segments to create along the u direction.</param>
+        /// <param name="vResolution">The number of line segments to create along the v direction.</param>
+        /// <returns>A tuple that contains the vertices in Item1 and triangles in Item2.</returns>
+        public Tuple<Vector3[], int[]> GenerateSurface(Vector3[] controlPoints, int uResolution, int vResolution, int offset)
+        {
+            if (controlPoints.Length == BezierControlPointGenerator.CONTROL_POINT_SIZE)
+            {
+                Vector3[] vertices = GenerateVertices(controlPoints, uResolution, vResolution);
+                int[] triangles = GenerateTriangles(uResolution, vResolution, offset);
 
                 return new Tuple<Vector3[], int[]>(vertices, triangles);
             }
@@ -64,6 +88,33 @@ namespace PrairieShellStudios.MountainGeneration
             int[] triangles = new int[uResolution * vResolution * 6];
 
             for (int u = 0, vert = 0, tri = 0; u < uResolution; u++, vert++)
+            {
+                for (int v = 0; v < vResolution; vert++, v++, tri += 6)
+                {
+                    // creates a single quad
+                    triangles[tri + 0] = vert;
+                    triangles[tri + 1] = vert + 1;
+                    triangles[tri + 2] = vert + vResolution + 1;
+                    triangles[tri + 3] = vert + vResolution + 1;
+                    triangles[tri + 4] = vert + 1;
+                    triangles[tri + 5] = vert + vResolution + 2;
+                }
+            }
+
+            return triangles;
+        }
+
+        /// <summary>
+        /// Generates the triangles for the Bezier surface.
+        /// </summary>
+        /// <param name="uResolution">The amount of line segments to generate along the u direction.</param>
+        /// <param name="vResolution">The amount of line segments to generate along the v direction.</param>
+        /// <returns></returns>
+        private int[] GenerateTriangles(int uResolution, int vResolution, int offset)
+        {
+            int[] triangles = new int[uResolution * vResolution * 6];
+
+            for (int u = 0, vert = offset, tri = 0; u < uResolution; u++, vert++)
             {
                 for (int v = 0; v < vResolution; vert++, v++, tri += 6)
                 {

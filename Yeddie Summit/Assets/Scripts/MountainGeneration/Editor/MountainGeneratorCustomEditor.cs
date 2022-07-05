@@ -38,6 +38,7 @@ namespace PrairieShellStudios.MountainGeneration
             if (GUILayout.Button("Generate New Terrain"))
             {
                 gen.GenerateMountain();
+                Debug.Log("Generatin new mountain.");
             }
         }
 
