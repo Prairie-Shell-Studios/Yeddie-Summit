@@ -5,6 +5,7 @@ using UnityEngine;
 namespace PrairieShellStudios.MountainGeneration
 {
     [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshCollider))]
     public class MountainGenerator : MonoBehaviour
     {
 
@@ -114,7 +115,11 @@ namespace PrairieShellStudios.MountainGeneration
             mesh.triangles = triangles.ToArray();
 
             mesh.RecalculateNormals();
+
+            GetComponent<MeshCollider>().sharedMesh = mesh;
         }
+
+
 
         #endregion
 
@@ -160,6 +165,7 @@ namespace PrairieShellStudios.MountainGeneration
             {
                 mesh = new Mesh();
                 GetComponent<MeshFilter>().mesh = mesh;
+                GetComponent<MeshCollider>().sharedMesh = mesh;
             }
 
             vertices = new List<Vector3>();
