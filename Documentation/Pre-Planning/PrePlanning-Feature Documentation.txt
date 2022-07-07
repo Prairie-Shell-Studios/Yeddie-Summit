@@ -71,6 +71,7 @@ B. Spawn from a "source" that is positioned on the mountain.
 - Enable the player to play another game if they choose after winning.
 - Create a spawn point where the player will always start at.
 - Create a transition animation between scenes.
+- Allow the player to open up a menu where they can quit the game.
 ## Player Stats
 - Implement player health.
 - Have collisions with "large" snowballs decrease health.

@@ -2,29 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PrairieShellStudio.PropPlacement
+namespace PrairieShellStudios.ObjectPlacement
 {
     /// <summary>
     /// Uses Perlin noise and raycasting to procedurally place GOs.
     /// </summary>
-    public class PerlinPlacer : MonoBehaviour
+    public class PerlinObjectPlacer : MonoBehaviour
     {
         #region fields
+
+        [Header("Placer Options")]
+        [SerializeField] private bool placeOnStart = false;
+        [SerializeField] private LayerMask rayMask;
         [SerializeField] [Min(0)] private float delay = 0f;
 
         [Header("Placement Dimensions")]
         [SerializeField] [Min(0)] private float width = 10f; // x
         [SerializeField] [Min(0)] private float length = 10f; // z
-        [SerializeField] private float raycastDistance = 250f;
-        [SerializeField] private LayerMask rayMask;
+        [SerializeField] private float height = 250f; // y
 
         [Header("Props To Place")]
-        public List<PerlinPlacedProp> props = new List<PerlinPlacedProp>();
+        public List<PlaceableObjectCollection> placeableObjects = new List<PlaceableObjectCollection>();
 
         [Header("Noise Properties")]
         [SerializeField] [Min(0.01f)] float noiseScale = 1f;
         private float xOffset = 0f;
         private float zOffset = 0f;
+
+        [Header("Boundary Gizmos")]
+        [SerializeField] private bool showBounds = false;
+
 
         #endregion
 
@@ -36,7 +43,10 @@ namespace PrairieShellStudio.PropPlacement
 
         void Start()
         {
-            StartCoroutine(LateStart());
+            if (placeOnStart)
+            {
+                StartCoroutine(LateStart());
+            }
         }
 
         /// <summary>
@@ -47,7 +57,15 @@ namespace PrairieShellStudio.PropPlacement
         IEnumerator LateStart()
         {
             yield return new WaitForSeconds(delay);
-            PlaceProps();
+            SpawnObjects();
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (showBounds)
+            {
+                Gizmos.DrawWireCube(transform.position - new Vector3(0f, height/2, 0f), new Vector3(2*width, height, 2*length));
+            }
         }
 
         #endregion
@@ -57,22 +75,22 @@ namespace PrairieShellStudio.PropPlacement
         /// <summary>
         /// Places each prop within the collection of PerlinPlacedProp instances.
         /// </summary>
-        public void PlaceProps()
+        public void SpawnObjects()
         {
             xOffset = Random.Range(0f, 99999f);
             zOffset = Random.Range(0f, 99999f);
 
-            foreach (PerlinPlacedProp prop in props)
+            foreach (PlaceableObjectCollection collection in placeableObjects)
             {
-                Place(prop);
+                SpawnFromCollection(collection);
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="prop"></param>
-        private void Place(PerlinPlacedProp prop)
+        /// <param name="collection"></param>
+        private void SpawnFromCollection(PlaceableObjectCollection collection)
         {
             // generate grid
             float startX = transform.position.x - width;
@@ -80,7 +98,7 @@ namespace PrairieShellStudio.PropPlacement
             float endX = transform.position.x + width;
             float endZ = transform.position.z + length;
 
-            Vector2 cellSize = new Vector2(2 * width / prop.Density, 2 * length / prop.Density);
+            Vector2 cellSize = new Vector2(2 * width / collection.Density, 2 * length / collection.Density);
 
             for (float x = startX; x <= endX; x += cellSize.x)
             {
@@ -88,11 +106,12 @@ namespace PrairieShellStudio.PropPlacement
                 for (float z = startZ; z < endZ; z += cellSize.y)
                 {
                     float zCoord = (z + zOffset) * noiseScale;
+                    float perlinValue = Mathf.PerlinNoise(xCoord, zCoord);
                     // check if Perlin value is within thresholds
-                    if (prop.CanSpawn(Mathf.PerlinNoise(xCoord, zCoord)))
+                    if (collection.ValidPerlinValue(perlinValue))
                     {
                         // cast a ray and check if it collides with terrain
-                        SpawnRaycast(prop, x, z, cellSize);
+                        SpawnRaycast(perlinValue, collection, x, z, cellSize);
                     }
                 }
             }
@@ -101,8 +120,8 @@ namespace PrairieShellStudio.PropPlacement
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="prop"></param>
-        public void SpawnRaycast(PerlinPlacedProp prop, float x, float z, Vector2 cellSize)
+        /// <param name="collection"></param>
+        public void SpawnRaycast(float perlinValue, PlaceableObjectCollection collection, float x, float z, Vector2 cellSize)
         {
             RaycastHit hit;
 
@@ -110,24 +129,13 @@ namespace PrairieShellStudio.PropPlacement
             Vector2 spawnPos = new Vector2(UnityEngine.Random.Range(x - halfCellSize.x, x + halfCellSize.x),
                     UnityEngine.Random.Range(z - halfCellSize.y, z + halfCellSize.y));
 
-            if (Physics.Raycast(new Vector3(spawnPos.x, transform.position.y, spawnPos.y), Vector3.down, out hit, raycastDistance, rayMask))
+            if (Physics.Raycast(new Vector3(spawnPos.x, transform.position.y, spawnPos.y), Vector3.down, out hit, height, rayMask))
             {
-                prop.InstantiateObject(hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                if (collection.CanSpawn(perlinValue, hit.point.y))
+                {
+                    collection.InstantiatePlaceableObject(hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                }
             }
-        }
-
-        
-
-        #endregion
-
-        #region noise
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void GenerateNoise()
-        {
-
         }
 
         #endregion
