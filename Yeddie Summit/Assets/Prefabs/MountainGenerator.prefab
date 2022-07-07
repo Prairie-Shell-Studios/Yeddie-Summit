@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 328734967397038646}
   - component: {fileID: 328734967397038647}
   - component: {fileID: 230359958}
+  - component: {fileID: 850600381282019874}
   m_Layer: 9
   m_Name: MountainGenerator
   m_TagString: Terrain
@@ -107,4 +108,18 @@ MonoBehaviour:
   noiseImpact: 10
   clampedEdges: 0
   showBounds: 0
-  pointSize: 0.2
+  pointSize: 10
+--- !u!64 &850600381282019874
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328734967397038642}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
