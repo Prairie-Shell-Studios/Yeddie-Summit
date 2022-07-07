@@ -11,7 +11,6 @@ namespace PrairieShellStudios.MountainGeneration
     {
         #region fields
 
-        //private BezierControlPoints controlPoints;
         private static readonly int[] peakRange = new int[] { 5, 6, 9, 10 };
         public static readonly int CONTROL_POINT_SIZE = 16;
         private const int MIN_DEN = 2;
