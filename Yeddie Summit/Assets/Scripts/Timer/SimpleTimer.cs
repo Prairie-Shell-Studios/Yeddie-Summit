@@ -35,6 +35,7 @@ namespace PrairieShellStudios.Timer
         
         public float MinTime { get => minTime; }
 
+        public TimerDirection Direction { get => direction; }
 
         #endregion
 
