@@ -31,6 +31,11 @@ namespace PrairieShellStudios.Timer
             } 
         }
 
+        public float MaxTime { get => maxTime; }
+        
+        public float MinTime { get => minTime; }
+
+
         #endregion
 
         #region constructor(s)
@@ -100,6 +105,15 @@ namespace PrairieShellStudios.Timer
         #region api
 
         /// <summary>
+        /// Calculates the entire duration of the timer without considering elapsed time.
+        /// </summary>
+        /// <returns>The total length of the timer.</returns>
+        public float Duration()
+        {
+            return (timeLimit >= 0) ? maxTime - minTime : -1;
+        }
+
+        /// <summary>
         /// Determines whether or not the time on the timer has reached its time limit.
         /// </summary>
         /// <returns>True if the time limit has been reached. 
@@ -114,6 +128,16 @@ namespace PrairieShellStudios.Timer
             }
 
             return hasElapsed;
+        }
+
+        /// <summary>
+        /// Resets the timer.
+        /// </summary>
+        /// <returns>The start time for the timer.</returns>
+        public float Reset()
+        {
+            currentTime = (direction == TimerDirection.CountUp) ? minTime : maxTime;
+            return currentTime;
         }
 
         /// <summary>
@@ -137,16 +161,6 @@ namespace PrairieShellStudios.Timer
             return currentTime;
         }
 
-        /// <summary>
-        /// Resets the timer.
-        /// </summary>
-        /// <returns>The start time for the timer.</returns>
-        public float Reset()
-        {
-            currentTime = (direction == TimerDirection.CountUp) ? minTime : maxTime;
-            return currentTime;
-        }
-
         #endregion
 
         #region logic
@@ -163,12 +177,12 @@ namespace PrairieShellStudios.Timer
                 if (direction == TimerDirection.CountUp)
                 {
                     tempTime += Time.deltaTime;
-                    currentTime = (timeLimit >= 0 && tempTime < timeLimit) ? tempTime : timeLimit;
+                    currentTime = (tempTime < timeLimit) ? tempTime : timeLimit;
                 }
                 else
                 {
                     tempTime -= Time.deltaTime;
-                    currentTime = (timeLimit >= 0 && tempTime > timeLimit) ? tempTime : timeLimit;
+                    currentTime = (tempTime > timeLimit) ? tempTime : timeLimit;
                 }
             }
         }
