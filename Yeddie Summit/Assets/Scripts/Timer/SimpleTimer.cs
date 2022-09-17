@@ -105,6 +105,35 @@ namespace PrairieShellStudios.Timer
         #region api
 
         /// <summary>
+        /// Changes the duration of the timer and handles the elapsed time change.
+        /// If a negative value is specified, the duration will not be changed.
+        /// </summary>
+        /// <param name="duration">The new duration that the timer will have</param>
+        public void ChangeDuration(float duration)
+        {
+            if (duration >= 0)
+            {
+                float durationDifference = Duration() - duration;
+                maxTime += durationDifference;
+
+                if (isActive && direction == TimerDirection.CountDown)
+                {
+                    currentTime += durationDifference;
+                }
+                else if (direction == TimerDirection.CountUp)
+                {
+                    timeLimit = maxTime;
+                }
+
+                // reset timer to start at appropriate times
+                if (!isActive)
+                {
+                    Reset();
+                }
+            }
+        }
+
+        /// <summary>
         /// Calculates the entire duration of the timer without considering elapsed time.
         /// </summary>
         /// <returns>The total length of the timer.</returns>
