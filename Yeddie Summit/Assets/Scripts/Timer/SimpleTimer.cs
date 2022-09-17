@@ -107,6 +107,7 @@ namespace PrairieShellStudios.Timer
         /// <summary>
         /// Changes the duration of the timer and handles the elapsed time change.
         /// If a negative value is specified, the duration will not be changed.
+        /// Make sure to Reset timer if you want it to start at the correct time.
         /// </summary>
         /// <param name="duration">The new duration that the timer will have</param>
         public void ChangeDuration(float duration)
@@ -123,12 +124,6 @@ namespace PrairieShellStudios.Timer
                 else if (direction == TimerDirection.CountUp)
                 {
                     timeLimit = maxTime;
-                }
-
-                // reset timer to start at appropriate times
-                if (!isActive)
-                {
-                    Reset();
                 }
             }
         }
