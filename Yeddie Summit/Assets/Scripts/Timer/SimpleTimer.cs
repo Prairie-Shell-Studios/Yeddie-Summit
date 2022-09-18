@@ -218,7 +218,7 @@ namespace PrairieShellStudios.Timer
 
         override public string ToString()
         {
-            return "Start: " + StartTime() + "\tCurrent: " + currentTime + "\tStop: " + StopTime() + "\tLimit: " + timeLimit + "\n";
+            return "Start: " + StartTime() + "\tCurrent: " + currentTime + "\tStop: " + StopTime() + "\n";
         }
 
         #endregion

@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
+using PrairieShellStudios.Timer;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using PrairieShellStudios.Timer;
 
 public class SimpleTimerTests
 {
