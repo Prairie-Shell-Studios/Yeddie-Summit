@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PrairieShellStudios.Timer;
+using System;
 
 
 namespace PraireShellStudios.Status
@@ -16,6 +17,8 @@ namespace PraireShellStudios.Status
     {
         #region fields
 
+        [SerializeField]
+        private string statusName;
         [SerializeField]
         private int max = 100;
         [SerializeField]
@@ -97,6 +100,22 @@ namespace PraireShellStudios.Status
         #endregion
 
         #region api
+
+        public override bool Equals(object other)
+        {
+            StatusScriptableObject otherStatus = null;
+
+            try
+            {
+                otherStatus = (StatusScriptableObject)other;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+
+            return string.Equals(otherStatus.statusName, statusName);
+        }
 
         /// <summary>
         /// Start the timer to change the current value over time.

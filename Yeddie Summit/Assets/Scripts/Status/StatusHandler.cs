@@ -14,8 +14,7 @@ namespace PraireShellStudios.Status
         #region fields
 
         [SerializeField]
-        private Dictionary<string, StatusScriptableObject> statusScriptables = 
-            new Dictionary<string, StatusScriptableObject>();
+        private List<StatusScriptableObject> statusScriptables = new List<StatusScriptableObject>();
 
         #endregion
 
@@ -24,18 +23,18 @@ namespace PraireShellStudios.Status
         // Start is called before the first frame update
         void Start()
         {
-            foreach (KeyValuePair<string, StatusScriptableObject> status in statusScriptables)
+            foreach (StatusScriptableObject status in statusScriptables)
             {
-                status.Value.Init();
+                status.Init();
             }
         }
 
         // Update is called once per frame
         void Update()
         {
-            foreach(KeyValuePair<string, StatusScriptableObject> status in statusScriptables)
+            foreach(StatusScriptableObject> status in statusScriptables)
             {
-                status.Value.HandleBehaviour();
+                status.HandleBehaviour();
             }
         }
 
