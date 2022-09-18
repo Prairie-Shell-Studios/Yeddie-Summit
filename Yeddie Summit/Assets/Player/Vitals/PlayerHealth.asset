@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade63e6c7b9eb974897da4378379e6f5, type: 3}
   m_Name: PlayerHealth
   m_EditorClassIdentifier: 
+  statusName: default
   max: 100
-  current: 100
+  current: 90
   min: 0
   behaviour: 2
-  behaviourRate: 2
+  behaviourRate: 1

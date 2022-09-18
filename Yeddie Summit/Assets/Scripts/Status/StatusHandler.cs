@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace PraireShellStudios.Status
+namespace PrairieShellStudios.Status
 {
     /// <summary>
     /// Handle the updates for each status in list.

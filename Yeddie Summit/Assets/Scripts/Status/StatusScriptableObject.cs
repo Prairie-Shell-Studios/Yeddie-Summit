@@ -5,7 +5,7 @@ using PrairieShellStudios.Timer;
 using System;
 
 
-namespace PraireShellStudios.Status
+namespace PrairieShellStudios.Status
 {
     /// <summary>
     /// A ScriptableObject that has a min, max, and current value.
@@ -144,10 +144,10 @@ namespace PraireShellStudios.Status
         /// </summary>
         /// <param name="amount">A value amount to change the current value.</param>
         /// <returns>The new current value.</returns>
-        public int ChangeCurrent(int amount)
+        public void ChangeCurrent(int amount)
         {
             Current += amount;
-            return current;
+            /*return current;*/
         }
 
         #endregion

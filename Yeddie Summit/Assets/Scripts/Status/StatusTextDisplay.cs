@@ -1,8 +1,7 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
-namespace PraireShellStudios.Status
+namespace PrairieShellStudios.Status
 {
     /// <summary>
     /// Display the current value of a status in a TMPro element.
@@ -27,6 +26,7 @@ namespace PraireShellStudios.Status
         // Start is called before the first frame update
         void Start()
         {
+            CheckDependencies();
             UpdateText();
         }
 
@@ -39,6 +39,14 @@ namespace PraireShellStudios.Status
         #endregion
 
         #region utility
+
+        private void CheckDependencies()
+        {
+            if (textMesh == null || status == null)
+            {
+                Debug.LogWarning("StatusTextDisplay: Either text or status have not been assigned.");
+            }
+        }
 
         private void UpdateText()
         {
