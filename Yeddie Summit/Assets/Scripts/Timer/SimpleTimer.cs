@@ -165,6 +165,7 @@ namespace PrairieShellStudios.Timer
 
         /// <summary>
         /// Determine whether or not the time on the timer has reached its time limit.
+        /// A call to this will elapse time.
         /// </summary>
         /// <returns>True if the time limit has been reached. 
         /// False if the time limit has not been reached.</returns>
