@@ -99,6 +99,44 @@ public class SimpleTimerTests
         Assert.AreEqual(testStartTime + testDuration, testTimer.MaxTime);
     }
 
+    [Test]
+    public void ChangeDirectionTest()
+    {
+        // start countup timer without limit
+        SimpleTimer timer = new SimpleTimer();
+        Assert.AreEqual(defaultStartTime, timer.MinTime);
+        Assert.AreEqual(unlimitedStopTime, timer.MaxTime);
+        Assert.AreEqual(defaultStartTime, timer.StartTime());
+        Assert.AreEqual(unlimitedStopTime, timer.StopTime());
+        // change direction to countup
+        timer.Direction = TimerDirection.CountUp;
+        Assert.AreEqual(defaultStartTime, timer.MinTime);
+        Assert.AreEqual(unlimitedStopTime, timer.MaxTime);
+        Assert.AreEqual(defaultStartTime, timer.StartTime());
+        Assert.AreEqual(unlimitedStopTime, timer.StopTime());
+        // change direction to countdown
+        timer.Direction = TimerDirection.CountDown;
+        Assert.AreEqual(defaultStartTime, timer.MinTime);
+        Assert.AreEqual(defaultStartTime, timer.MaxTime);
+        Assert.AreEqual(defaultStartTime, timer.CurrentTime);
+        Assert.AreEqual(defaultStartTime, timer.StartTime());
+        Assert.AreEqual(defaultStartTime, timer.StopTime());
+        // change direction to countdown
+        timer.Direction = TimerDirection.CountDown;
+        Assert.AreEqual(defaultStartTime, timer.MinTime);
+        Assert.AreEqual(defaultStartTime, timer.MaxTime);
+        Assert.AreEqual(defaultStartTime, timer.CurrentTime);
+        Assert.AreEqual(defaultStartTime, timer.StartTime());
+        Assert.AreEqual(defaultStartTime, timer.StopTime());
+        // change direction to countup
+        timer.Direction = TimerDirection.CountUp;
+        Assert.AreEqual(defaultStartTime, timer.MinTime);
+        Assert.AreEqual(defaultStartTime, timer.MaxTime);
+        Assert.AreEqual(defaultStartTime, timer.CurrentTime);
+        Assert.AreEqual(defaultStartTime, timer.StartTime());
+        Assert.AreEqual(defaultStartTime, timer.StopTime());
+    }
+
     [UnityTest]
     public IEnumerator TimerTests([ValueSourceAttribute(nameof(timerWrappers))] TestTimerWrapper timerWrapper)
     {

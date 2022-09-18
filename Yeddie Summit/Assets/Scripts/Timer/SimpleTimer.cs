@@ -38,7 +38,22 @@ namespace PrairieShellStudios.Timer
         
         public float MinTime { get => minTime; }
 
-        public TimerDirection Direction { get => direction; }
+        public TimerDirection Direction { 
+            get => direction;
+            set
+            {
+                direction = value;
+                if (direction == TimerDirection.CountUp && timeLimit >= 0)
+                {
+                    timeLimit = maxTime;
+                }
+                else if (direction == TimerDirection.CountDown)
+                {
+                    maxTime = (timeLimit < 0) ? currentTime : maxTime;
+                    timeLimit = minTime;
+                }
+            }
+        }
 
         #endregion
 
@@ -150,6 +165,7 @@ namespace PrairieShellStudios.Timer
 
         /// <summary>
         /// Determine whether or not the time on the timer has reached its time limit.
+        /// A call to this will elapse time.
         /// </summary>
         /// <returns>True if the time limit has been reached. 
         /// False if the time limit has not been reached.</returns>

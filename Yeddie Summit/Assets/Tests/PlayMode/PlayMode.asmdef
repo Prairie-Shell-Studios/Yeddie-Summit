@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "MountainGeneration",
-        "Timer"
+        "Timer",
+        "Status"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
