@@ -18,7 +18,7 @@ namespace PraireShellStudios.Status
         #region fields
 
         [SerializeField]
-        private string statusName;
+        private string statusName = "default";
         [SerializeField]
         private int max = 100;
         [SerializeField]
@@ -97,25 +97,11 @@ namespace PraireShellStudios.Status
             }
         }
 
+        public string StatusName { get => statusName; }
+
         #endregion
 
         #region api
-
-        public override bool Equals(object other)
-        {
-            StatusScriptableObject otherStatus = null;
-
-            try
-            {
-                otherStatus = (StatusScriptableObject)other;
-            }
-            catch (InvalidCastException)
-            {
-                return false;
-            }
-
-            return string.Equals(otherStatus.statusName, statusName);
-        }
 
         /// <summary>
         /// Start the timer to change the current value over time.
@@ -165,6 +151,7 @@ namespace PraireShellStudios.Status
         }
 
         #endregion
+        
     }
 
     #region enums

@@ -32,7 +32,7 @@ namespace PraireShellStudios.Status
         // Update is called once per frame
         void Update()
         {
-            foreach(StatusScriptableObject> status in statusScriptables)
+            foreach(StatusScriptableObject status in statusScriptables)
             {
                 status.HandleBehaviour();
             }
@@ -44,7 +44,15 @@ namespace PraireShellStudios.Status
 
         public StatusScriptableObject GetStatus(string name)
         {
-            return statusScriptables[name];
+            foreach(StatusScriptableObject status in statusScriptables)
+            {
+                if (status.StatusName == name)
+                {
+                    return status;
+                }
+            }
+
+            return null;
         }
 
         #endregion
