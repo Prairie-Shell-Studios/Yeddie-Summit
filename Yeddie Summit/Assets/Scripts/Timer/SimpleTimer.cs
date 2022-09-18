@@ -11,7 +11,7 @@ namespace PrairieShellStudios.Timer
     {
         #region fields
 
-        private float maxTime = 60f;
+        private float maxTime = -1f;
         private float minTime = 0f;
         private float timeLimit = -1f;
         private float currentTime = 0f;
@@ -159,9 +159,9 @@ namespace PrairieShellStudios.Timer
 
             ElapseTime();
 
-            if (timeLimit >= 0 && currentTime >= timeLimit)
+            if (timeLimit >= 0)
             {
-                hasElapsed = true;
+                hasElapsed = (direction == TimerDirection.CountUp) ? currentTime >= timeLimit : currentTime <= timeLimit;
             }
 
             return hasElapsed;
@@ -218,7 +218,7 @@ namespace PrairieShellStudios.Timer
 
         override public string ToString()
         {
-            return "Start: " + StartTime() + "\tCurrent: " + currentTime + "\tStop: " + StopTime() + "\n";
+            return "Start: " + StartTime() + "\tCurrent: " + currentTime + "\tStop: " + StopTime() + "\tLimit: " + timeLimit + "\n";
         }
 
         #endregion
@@ -233,16 +233,13 @@ namespace PrairieShellStudios.Timer
             if (isActive)
             {
                 float tempTime = currentTime;
-                Debug.Log("Is active");
                 if (direction == TimerDirection.CountUp)
                 {
-                    Debug.Log("Adding time");
                     tempTime += Time.deltaTime;
-                    currentTime = (tempTime < timeLimit) ? tempTime : timeLimit;
+                    currentTime = (timeLimit < 0 || tempTime < timeLimit) ? tempTime : timeLimit;
                 }
                 else
                 {
-                    Debug.Log("Decreasing time");
                     tempTime -= Time.deltaTime;
                     currentTime = (tempTime > timeLimit) ? tempTime : timeLimit;
                 }

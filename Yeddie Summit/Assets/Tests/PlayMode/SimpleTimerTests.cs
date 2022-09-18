@@ -10,26 +10,30 @@ public class SimpleTimerTests
     #region fields
 
     static private float defaultStartTime = 0f;
-    static private float stopWaitTime;
-    static private float testDuration = 0.25f;
+    static private float testDuration = 1f;
     static private float testStartTime = 1f;
     static private float unlimitedStopTime = -1f;
 
-    static private List<TestTimerWrapper> listTimerWrappers = new List<TestTimerWrapper>();
-
-    static TestTimerWrapper[] GetTimerWrappers() 
+    static TestTimerWrapper[] timerWrappers =
     {
-        stopWaitTime = testDuration / 2f;
-
-        UnlimitedDefault();
-        UnlimitedWithStartTime();
-        CountUpWithLimit();
-        CountDownWithLimit();
-        CountUpWithLimitAndRange();
-        CountDownWithLimitAndRange();
-
-        return listTimerWrappers.ToArray(); 
-    }
+        new TestTimerWrapper(new SimpleTimer(), false, TimerDirection.CountUp,
+            defaultStartTime, unlimitedStopTime), // unlimited default
+        new TestTimerWrapper(
+            new SimpleTimer(testStartTime),
+            false, TimerDirection.CountUp, testStartTime, unlimitedStopTime), // unlimited with start time
+        new TestTimerWrapper(
+            new SimpleTimer(defaultStartTime, defaultStartTime + testDuration),
+            true, TimerDirection.CountUp, defaultStartTime, defaultStartTime + testDuration), // count up with limit
+        new TestTimerWrapper(
+            new SimpleTimer(TimerDirection.CountDown, testDuration),
+            true, TimerDirection.CountDown, testDuration, defaultStartTime), //countdown with limit
+        new TestTimerWrapper(
+                new SimpleTimer(TimerDirection.CountUp, testStartTime, testStartTime + testDuration),
+                true, TimerDirection.CountUp, testStartTime, testStartTime + testDuration), // count up with limit and range
+        new TestTimerWrapper(
+                new SimpleTimer(TimerDirection.CountDown, testStartTime, testStartTime + testDuration),
+                true, TimerDirection.CountDown, testStartTime + testDuration, testStartTime) // count down with limit and range
+    };
 
     #endregion
 
@@ -38,74 +42,21 @@ public class SimpleTimerTests
     [OneTimeSetUp]
     public void SetUp()
     {
-        stopWaitTime = testDuration / 2f;
     }
 
     #endregion
 
     #region static methods
 
-    static void UnlimitedDefault()
-    {
-        Debug.Log("running unlimited default");
-        listTimerWrappers.Add(new TestTimerWrapper(new SimpleTimer(), false, TimerDirection.CountUp, 
-            defaultStartTime, unlimitedStopTime));
-    }
-
-     static void UnlimitedWithStartTime()
-     {
-        Debug.Log("running unlimited with start time");
-        listTimerWrappers.Add(
-            new TestTimerWrapper(
-            new SimpleTimer(testStartTime), 
-            false, TimerDirection.CountUp, testStartTime, unlimitedStopTime));
-     }
-
-     static void CountUpWithLimit()
-     {
-        Debug.Log("running countup with limit");
-        listTimerWrappers.Add(
-            new TestTimerWrapper(
-            new SimpleTimer(defaultStartTime, defaultStartTime + testDuration), 
-            true, TimerDirection.CountUp, defaultStartTime, defaultStartTime + testDuration));
-     }
-
-     static void CountDownWithLimit()
-     {
-        Debug.Log("running countdown with limit");
-        listTimerWrappers.Add(
-            new TestTimerWrapper(
-            new SimpleTimer(TimerDirection.CountDown, testDuration),
-            true, TimerDirection.CountDown, testDuration, defaultStartTime));
-     }
-
-     static void CountUpWithLimitAndRange()
-     {
-        Debug.Log("running countup with limit and range");
-        listTimerWrappers.Add(
-            new TestTimerWrapper(
-                new SimpleTimer(TimerDirection.CountUp, testStartTime, testStartTime + testDuration),
-                true, TimerDirection.CountUp, testStartTime, testStartTime + testDuration));
-     }
-
-     static void CountDownWithLimitAndRange()
-     {
-        Debug.Log("running countdown with limit and range");
-        listTimerWrappers.Add(
-            new TestTimerWrapper(
-                new SimpleTimer(TimerDirection.CountDown, testStartTime + testDuration, testStartTime),
-                true, TimerDirection.CountDown, testStartTime + testDuration, testStartTime));
-     }
-
-    /*[Test]
+    [Test]
     public void CountUpWithDurationChangeTest()
     {
         // create an unlimited timer
         SimpleTimer timer = new SimpleTimer();
-        TimerTests(timer, false, TimerDirection.CountUp, defaultStartTime, unlimitedStopTime);
         // change the duration
         timer.ChangeDuration(testDuration);
-        TimerTests(timer, true, TimerDirection.CountUp, defaultStartTime, testDuration);
+        Assert.AreEqual(testDuration, timer.StopTime());
+        Assert.AreEqual(defaultStartTime, timer.CurrentTime);
     }
 
     [Test]
@@ -114,14 +65,18 @@ public class SimpleTimerTests
         // create a countdown timer
         SimpleTimer timer = new SimpleTimer(TimerDirection.CountDown, testDuration);
         // increase the duration
-        testDuration *= 2f;
-        timer.ChangeDuration(testDuration);
-        TimerTests(timer, true, TimerDirection.CountDown, testDuration, defaultStartTime);
+        float newDuration = 2f * testDuration;
+        timer.ChangeDuration(newDuration);
+        timer.Reset();
+        Assert.AreEqual(newDuration, timer.MaxTime);
+        Assert.AreEqual(newDuration, timer.CurrentTime);
         // decrease the duration
-        testDuration /= 2f;
-        timer.ChangeDuration(testDuration);
-        TimerTests(timer, true, TimerDirection.CountDown, testDuration, defaultStartTime);
-    }*/
+        newDuration = testDuration / 2f;
+        timer.ChangeDuration(newDuration);
+        timer.Reset();
+        Assert.AreEqual(newDuration, timer.MaxTime);
+        Assert.AreEqual(newDuration, timer.CurrentTime);
+    }
 
     #endregion
 
@@ -158,10 +113,9 @@ public class SimpleTimerTests
         Assert.AreEqual(2 * testDuration, testTimer.MaxTime);
     }
 
-    [UnityTest, Sequential]
-    public IEnumerator TimerTests([ValueSourceAttribute(nameof(GetTimerWrappers))] TestTimerWrapper timerWrapper)
+    [UnityTest]
+    public IEnumerator TimerTests([ValueSourceAttribute(nameof(timerWrappers))] TestTimerWrapper timerWrapper)
     {
-        Debug.Log("New Timer");
         SimpleTimer timer = timerWrapper.Timer;
         float startTime = timerWrapper.StartTime;
         float stopTime = timerWrapper.StopTime;
@@ -169,7 +123,6 @@ public class SimpleTimerTests
         TimerDirection direction = timerWrapper.Direction;
 
         Assert.NotNull(timer);
-        Debug.Log("Start Time = " + timer.ToString());
         // start timer
         Assert.AreEqual(startTime, timer.CurrentTime);
         // verify durations
@@ -197,27 +150,29 @@ public class SimpleTimerTests
         }
 
         Assert.AreEqual(startTime, timer.Start());
-        // wait for half timer duration
-        yield return new WaitForSeconds(stopWaitTime);
-        Assert.IsFalse(timer.HasExpired());
+        // wait for a frame
+        yield return null;
         // stop timer
-        Debug.Log("First stop = " + timer.ToString());
         float recordedStopTime = timer.Stop();
-        /*Debug.Log(timer.ToString());*/
+        Assert.IsFalse(timer.HasExpired());
 
-        yield return new WaitForSeconds(stopWaitTime);
+        yield return null;
         Assert.AreEqual(recordedStopTime, timer.CurrentTime);
         // start timer again and go until expired
         if (hasLimit)
         {
             timer.Start();
+            float elapsedTime = 0f;
+            while ((elapsedTime += Time.deltaTime) < testDuration)
+            {
+                yield return null;
+                timer.HasExpired();
+            }
             // wait for remainder of duration
-            yield return new WaitForSeconds(stopWaitTime);
             Assert.IsTrue(timer.HasExpired());
             Assert.AreEqual(stopTime, timer.CurrentTime);
             // stop timer one last time
             timer.Stop();
-            Debug.Log("Last Stop = " + timer.ToString());
         }
         // reset timer
         timer.Reset();
