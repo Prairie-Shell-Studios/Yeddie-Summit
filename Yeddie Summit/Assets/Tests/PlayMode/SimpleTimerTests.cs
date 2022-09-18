@@ -37,27 +37,7 @@ public class SimpleTimerTests
 
     #endregion
 
-    #region setup and teardowns
-
-    [OneTimeSetUp]
-    public void SetUp()
-    {
-    }
-
-    #endregion
-
-    #region static methods
-
-    [Test]
-    public void CountUpWithDurationChangeTest()
-    {
-        // create an unlimited timer
-        SimpleTimer timer = new SimpleTimer();
-        // change the duration
-        timer.ChangeDuration(testDuration);
-        Assert.AreEqual(testDuration, timer.StopTime());
-        Assert.AreEqual(defaultStartTime, timer.CurrentTime);
-    }
+    #region tests
 
     [Test]
     public void CountDownwithDurationChangeTest()
@@ -78,24 +58,15 @@ public class SimpleTimerTests
         Assert.AreEqual(newDuration, timer.CurrentTime);
     }
 
-    #endregion
-
-    #region tests
-
     [Test]
-    public void NegativeTimersTest()
+    public void CountUpWithDurationChangeTest()
     {
-        // negative start time
-        SimpleTimer testTimer = new SimpleTimer(-testStartTime);
-        Assert.AreEqual(testStartTime, testTimer.MinTime);
-        // negative start and negative stop time
-        testTimer = new SimpleTimer(-testStartTime, -testStartTime - testDuration);
-        Assert.AreEqual(testStartTime, testTimer.MinTime);
-        Assert.AreEqual(testStartTime + testDuration, testTimer.MaxTime);
-        // count-down: negative start and negative stop time
-        testTimer = new SimpleTimer(TimerDirection.CountDown, -testStartTime, -testStartTime - testDuration);
-        Assert.AreEqual(testStartTime, testTimer.MinTime);
-        Assert.AreEqual(testStartTime + testDuration, testTimer.MaxTime);
+        // create an unlimited timer
+        SimpleTimer timer = new SimpleTimer();
+        // change the duration
+        timer.ChangeDuration(testDuration);
+        Assert.AreEqual(testDuration, timer.StopTime());
+        Assert.AreEqual(defaultStartTime, timer.CurrentTime);
     }
 
     [Test]
@@ -111,6 +82,22 @@ public class SimpleTimerTests
         // change the duration to be a negative value
         testTimer.ChangeDuration(-2 * testDuration);
         Assert.AreEqual(2 * testDuration, testTimer.MaxTime);
+    }
+
+    [Test]
+    public void NegativeTimersTest()
+    {
+        // negative start time
+        SimpleTimer testTimer = new SimpleTimer(-testStartTime);
+        Assert.AreEqual(testStartTime, testTimer.MinTime);
+        // negative start and negative stop time
+        testTimer = new SimpleTimer(-testStartTime, -testStartTime - testDuration);
+        Assert.AreEqual(testStartTime, testTimer.MinTime);
+        Assert.AreEqual(testStartTime + testDuration, testTimer.MaxTime);
+        // count-down: negative start and negative stop time
+        testTimer = new SimpleTimer(TimerDirection.CountDown, -testStartTime, -testStartTime - testDuration);
+        Assert.AreEqual(testStartTime, testTimer.MinTime);
+        Assert.AreEqual(testStartTime + testDuration, testTimer.MaxTime);
     }
 
     [UnityTest]
@@ -180,11 +167,12 @@ public class SimpleTimerTests
     }
 
     #endregion
-
 }
 
-#region class(es)
-
+#region wrapper class
+/// <summary>
+/// Allows the parameterization of tests for the SimpleTimer.
+/// </summary>
 public class TestTimerWrapper
 {
     #region fields
