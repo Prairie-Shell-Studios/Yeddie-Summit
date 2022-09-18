@@ -38,7 +38,22 @@ namespace PrairieShellStudios.Timer
         
         public float MinTime { get => minTime; }
 
-        public TimerDirection Direction { get => direction; }
+        public TimerDirection Direction { 
+            get => direction;
+            set
+            {
+                direction = value;
+                if (direction == TimerDirection.CountUp && timeLimit >= 0)
+                {
+                    timeLimit = maxTime;
+                }
+                else if (direction == TimerDirection.CountDown)
+                {
+                    maxTime = (timeLimit < 0) ? currentTime : maxTime;
+                    timeLimit = minTime;
+                }
+            }
+        }
 
         #endregion
 
