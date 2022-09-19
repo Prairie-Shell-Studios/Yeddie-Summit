@@ -12,6 +12,7 @@ namespace PrairieShellStudios.Player
         [Header("Movement")]
         private Vector2 moveVal;
         [SerializeField] private float moveSpeed;
+        [SerializeField] private InputActionReference moveAction;
 
         #endregion
 
@@ -28,12 +29,28 @@ namespace PrairieShellStudios.Player
         
         void Start()
         {
-        
+            ChangeSpeed(moveSpeed);
         }
 
         void FixedUpdate()
         {
             transform.Translate(new Vector3(moveVal.x, 0f, moveVal.y) * moveSpeed);
+        }
+
+        #endregion
+
+        #region utility
+
+        /// <summary>
+        /// Change the speed of the player by modifying the Scale Processor for the Move action.
+        /// If a negative value is provided, it will be inverted.
+        /// </summary>
+        /// <param name="newSpeed">A new float value for the players' movement speed.</param>
+        public void ChangeSpeed(float newSpeed)
+        {
+            moveSpeed = (newSpeed < 0) ? -newSpeed : newSpeed;
+            string newFactor = "scale(factor=" + moveSpeed + ")";
+            moveAction.action.ApplyBindingOverride(new InputBinding { overrideProcessors = newFactor });
         }
 
         #endregion
