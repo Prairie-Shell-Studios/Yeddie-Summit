@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,12 +8,12 @@ namespace PrairieShellStudios.Player
     /// Current implementation allows the player to move, jump, and sprint.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerMovement : MonoBehaviour
+    public class ThirdPersonPlayerController : MonoBehaviour
     {
         #region fields
 
         private CharacterController controller;
-        public Transform camTransform;
+        private Transform camTransform;
 
         [Header("Movement")]
         private Vector2 moveVal;
@@ -59,11 +57,8 @@ namespace PrairieShellStudios.Player
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
-        }
-
-        void Start()
-        {
-            ChangeSpeed(walkSpeed);
+            camTransform = Camera.main.transform;
+            moveSpeed = walkSpeed;
         }
 
         void FixedUpdate()
@@ -91,6 +86,9 @@ namespace PrairieShellStudios.Player
             moveSpeed = (newSpeed < 0) ? -newSpeed : newSpeed;
         }
 
+        /// <summary>
+        /// Reset the player velocity if they are grounded.
+        /// </summary>
         private void HandlePlayerVelocity()
         {
             isGrounded = controller.isGrounded;
@@ -100,6 +98,10 @@ namespace PrairieShellStudios.Player
             }
         }
 
+        /// <summary>
+        /// Handle player jumping when they are grounded.
+        /// Current implementation has no clamped velocity when player is falling.
+        /// </summary>
         private void HandleJumping()
         {
             if (isJumping && isGrounded)
@@ -112,21 +114,30 @@ namespace PrairieShellStudios.Player
             isJumping = false;
         }
 
+        /// <summary>
+        /// Move the player based on the camera and player input.
+        /// </summary>
         private void HandleMovement()
         {
             Vector3 direction = new Vector3(moveVal.x, 0f, moveVal.y);
 
+            // handles player rotation
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camTransform.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            // handles player movement
             if (direction.magnitude >= 0.1f)
             {
-                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camTransform.eulerAngles.y;
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
                 Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 controller.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
             }
+
         }
 
+        /// <summary>
+        /// Increase the player speed when the proper input is used.
+        /// </summary>
         private void HandleSprinting()
         {
             // handles sprinting

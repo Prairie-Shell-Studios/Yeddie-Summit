@@ -61,7 +61,7 @@ Involves the following actions:
 - `Jump`
 - `Crouch`
 
-### CameraMovement
+### Cinemachine Freelook Camera
 
 Purpose: To handle the movement of the player camera.
 
