@@ -9,12 +9,18 @@ namespace PrairieShellStudios.Player
     /// Uses the new Unity Input System to control the players movement.
     /// Current implementation allows the player to move, jump, and sprint.
     /// </summary>
+    [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
         #region fields
 
+        private CharacterController controller;
+        public Transform cam;
+
         [Header("Movement")]
         private Vector2 moveVal;
+        [SerializeField] float turnSmoothTime = 0.1f;
+        private float turnSmoothVelocity;
         [SerializeField] private float walkSpeed;
         [SerializeField] private float moveSpeed;
 
@@ -47,7 +53,12 @@ namespace PrairieShellStudios.Player
         #endregion
 
         #region monobehaviour
-        
+
+        private void Awake()
+        {
+            controller = GetComponent<CharacterController>();
+        }
+
         void Start()
         {
             ChangeSpeed(walkSpeed);
@@ -57,7 +68,7 @@ namespace PrairieShellStudios.Player
         {
             HandleSprinting();
 
-            transform.Translate(new Vector3(moveVal.x, 0f, moveVal.y) * moveSpeed);
+            HandleMovement();
         }
 
         #endregion
@@ -81,7 +92,17 @@ namespace PrairieShellStudios.Player
 
         private void HandleMovement()
         {
+            Vector3 direction = new Vector3(moveVal.x, 0f, moveVal.y);
 
+            if (direction.magnitude >= 0.1f)
+            {
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+                Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                controller.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
+            }
         }
 
         private void HandleSprinting()
