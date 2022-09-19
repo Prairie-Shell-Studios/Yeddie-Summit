@@ -11,16 +11,24 @@ namespace PrairieShellStudios.Player
 
         [Header("Movement")]
         private Vector2 moveVal;
+        [SerializeField] private float walkSpeed;
         [SerializeField] private float moveSpeed;
-        [SerializeField] private InputActionReference moveAction;
+        [SerializeField] private float sprintSpeed;
+        private bool isSprinting = false;
+        public InputActionReference moveAction;
 
         #endregion
 
-        #region movement
+        #region actions
 
-        private void OnMove(InputValue value)
+        void OnMove(InputValue value)
         {
             moveVal = value.Get<Vector2>();
+        }
+
+        void OnSprint(InputValue value)
+        {
+            isSprinting = value.Get<float>() > 0f;
         }
 
         #endregion
@@ -29,11 +37,13 @@ namespace PrairieShellStudios.Player
         
         void Start()
         {
-            ChangeSpeed(moveSpeed);
+            ChangeSpeed(walkSpeed);
         }
 
         void FixedUpdate()
         {
+            HandleSprinting();
+
             transform.Translate(new Vector3(moveVal.x, 0f, moveVal.y) * moveSpeed);
         }
 
@@ -42,15 +52,26 @@ namespace PrairieShellStudios.Player
         #region utility
 
         /// <summary>
-        /// Change the speed of the player by modifying the Scale Processor for the Move action.
+        /// Change the speed of the player.
         /// If a negative value is provided, it will be inverted.
         /// </summary>
         /// <param name="newSpeed">A new float value for the players' movement speed.</param>
         public void ChangeSpeed(float newSpeed)
-        {
+        { 
             moveSpeed = (newSpeed < 0) ? -newSpeed : newSpeed;
-            string newFactor = "scale(factor=" + moveSpeed + ")";
-            moveAction.action.ApplyBindingOverride(new InputBinding { overrideProcessors = newFactor });
+        }
+
+        private void HandleSprinting()
+        {
+            // handles sprinting
+            if (isSprinting && moveSpeed != sprintSpeed)
+            {
+                ChangeSpeed(sprintSpeed);
+            }
+            else if (!isSprinting && moveSpeed != walkSpeed)
+            {
+                ChangeSpeed(walkSpeed);
+            }
         }
 
         #endregion
