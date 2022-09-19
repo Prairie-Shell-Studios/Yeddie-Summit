@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 namespace PrairieShellStudios.Player
 {
+    /// <summary>
+    /// Uses the new Unity Input System to control the players movement.
+    /// Current implementation allows the player to move, jump, and sprint.
+    /// </summary>
     public class PlayerMovement : MonoBehaviour
     {
         #region fields
@@ -13,13 +17,22 @@ namespace PrairieShellStudios.Player
         private Vector2 moveVal;
         [SerializeField] private float walkSpeed;
         [SerializeField] private float moveSpeed;
+
+        [Header("Sprinting")]
         [SerializeField] private float sprintSpeed;
         private bool isSprinting = false;
-        public InputActionReference moveAction;
+
+        [Header("Jumping")]
+        private bool isGrounded = false;
 
         #endregion
 
         #region actions
+
+        void OnJump(InputValue value)
+        {
+
+        }
 
         void OnMove(InputValue value)
         {
