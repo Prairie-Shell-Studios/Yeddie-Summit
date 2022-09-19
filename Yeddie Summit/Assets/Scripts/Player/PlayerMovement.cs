@@ -74,6 +74,16 @@ namespace PrairieShellStudios.Player
             moveSpeed = (newSpeed < 0) ? -newSpeed : newSpeed;
         }
 
+        private void HandleJumping()
+        {
+
+        }
+
+        private void HandleMovement()
+        {
+
+        }
+
         private void HandleSprinting()
         {
             // handles sprinting
