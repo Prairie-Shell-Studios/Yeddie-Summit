@@ -15,7 +15,7 @@ namespace PrairieShellStudios.Player
         #region fields
 
         private CharacterController controller;
-        public Transform cam;
+        public Transform camTransform;
 
         [Header("Movement")]
         private Vector2 moveVal;
@@ -23,21 +23,23 @@ namespace PrairieShellStudios.Player
         private float turnSmoothVelocity;
         [SerializeField] private float walkSpeed;
         [SerializeField] private float moveSpeed;
-
-        [Header("Sprinting")]
         [SerializeField] private float sprintSpeed;
         private bool isSprinting = false;
 
         [Header("Jumping")]
+        [SerializeField] private float jumpHeight = 10f;
+        private Vector3 playerVelocity;
         private bool isGrounded = false;
+        private bool isJumping = false;
+        private float gravityValue = -9.81f;
 
         #endregion
 
         #region actions
 
-        void OnJump(InputValue value)
+        void OnJump()
         {
-
+            isJumping = true;
         }
 
         void OnMove(InputValue value)
@@ -66,9 +68,13 @@ namespace PrairieShellStudios.Player
 
         void FixedUpdate()
         {
+            HandlePlayerVelocity();
+            
             HandleSprinting();
 
             HandleMovement();
+
+            HandleJumping();
         }
 
         #endregion
@@ -85,9 +91,25 @@ namespace PrairieShellStudios.Player
             moveSpeed = (newSpeed < 0) ? -newSpeed : newSpeed;
         }
 
+        private void HandlePlayerVelocity()
+        {
+            isGrounded = controller.isGrounded;
+            if (isGrounded && playerVelocity.y < 0)
+            {
+                playerVelocity.y = 0f;
+            }
+        }
+
         private void HandleJumping()
         {
+            if (isJumping && isGrounded)
+            {
+                playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            }
 
+            playerVelocity.y += gravityValue * Time.deltaTime;
+            controller.Move(playerVelocity * Time.deltaTime);
+            isJumping = false;
         }
 
         private void HandleMovement()
@@ -96,7 +118,7 @@ namespace PrairieShellStudios.Player
 
             if (direction.magnitude >= 0.1f)
             {
-                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camTransform.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
                 transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
