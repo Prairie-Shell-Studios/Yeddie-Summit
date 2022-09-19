@@ -26,6 +26,7 @@ namespace PrairieShellStudios.Player
 
         [Header("Jumping")]
         [SerializeField] private float jumpHeight = 10f;
+        [SerializeField] private float maxFallingVelocity = 45f;
         private Vector3 playerVelocity;
         private bool isGrounded = false;
         private bool isJumping = false;
@@ -47,7 +48,7 @@ namespace PrairieShellStudios.Player
 
         void OnSprint(InputValue value)
         {
-            isSprinting = value.Get<float>() > 0f;
+            isSprinting = value.Get<float>() > 0f && isGrounded;
         }
 
         #endregion
@@ -110,6 +111,7 @@ namespace PrairieShellStudios.Player
             }
 
             playerVelocity.y += gravityValue * Time.deltaTime;
+            playerVelocity.y = Mathf.Clamp(playerVelocity.y, -maxFallingVelocity, maxFallingVelocity);
             controller.Move(playerVelocity * Time.deltaTime);
             isJumping = false;
         }
