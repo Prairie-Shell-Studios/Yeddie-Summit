@@ -88,9 +88,48 @@ There are several different types of Bindings available.
 	- Connects a single control via its **Binding Path**.
 	- The Binding Path could be a keyboard key, an analogue trigger, or even the left stick of a controller.
 
-Did not continue notes...
+### Two Dimension Composite Axis
+
+Ideal for player movement. The value you get from this will change depending on the **Composite Type**. This will change the how the two axes affect each other.
+
+Digital:
+- Provides a square response.
+- So an input of up and right will provide an output of [1,1].
+- Can be used for tank movement.
+
+Digital Normalized:
+- Works the same way as Digital except that the vector is normalized.
+- So an input of up and right will provide an output of [0.7, 0.7].
+- Means that your player will move at the same speed when moving diagonally.
+- Use for WASD movement bindings.
+
+Analogue Mode:
+- Only used for analogue controls like a joystick or gamepad.
+- Does not work for discrete WASD bindings.
+
+## Menu (UI) Controls
+
+You may choose to setup another **Action Map** called `Menu`, or you could use the **Input System UI Module** which has default **Action Maps**.
+
+## Binding "Usages"
+
+Usages allow you to specify a general use to the binding. This could include "Submit", or "Enter", or "Back". This is useful when implementing a gamepad as a **control scheme** because a Nintendo controller has different defaults than an Xbox controller.
+
+## Recognizing Multiple Button Presses
+
+Can be done using Button with a Modifier Composite
+
+## Interactions and Processors
+
+Both change how input is interpreted.
+
+**Interactions** change what is required for an input to trigger an Action, while **Processors** modify the value that’s received.
+
 # Connecting Input Actions to GameObjects
 The simplest way is to use the Player Input component.
 - Add this component to your player object and configure it to work with your scripts.
+
+
+
 # Resources
 - [https://gamedevbeginner.com/input-in-unity-made-easy-complete-guide-to-the-new-system/#input_system](https://gamedevbeginner.com/input-in-unity-made-easy-complete-guide-to-the-new-system/#input_system).
