@@ -19,6 +19,7 @@ namespace PrairieShellStudios.Player
 
         [Header("Movement")]
         private Vector2 moveVal;
+        private float sprintVal;
         [SerializeField] float turnSmoothTime = 0.1f;
         private float turnSmoothVelocity;
         [SerializeField] private float moveSpeed;
@@ -30,6 +31,7 @@ namespace PrairieShellStudios.Player
             { SpeedState.Fast, 9f}
         };
         private bool isSprinting = false;
+        private bool isExhausted = false;
 
         [Header("Jumping")]
         [SerializeField] private float jumpHeight = 10f;
@@ -41,6 +43,7 @@ namespace PrairieShellStudios.Player
 
         [Header("Status")]
         [SerializeField] private StatusScriptableObject stamina;
+
 
         #endregion
 
@@ -58,7 +61,7 @@ namespace PrairieShellStudios.Player
 
         void OnSprint(InputValue value)
         {
-            isSprinting = value.Get<float>() > 0f && isGrounded;
+            sprintVal = value.Get<float>();
         }
 
         #endregion
@@ -152,16 +155,40 @@ namespace PrairieShellStudios.Player
         /// </summary>
         private void HandleSprinting()
         {
+            isSprinting = sprintVal > 0f && isGrounded && !isExhausted && (moveVal.x > 0f || moveVal.y > 0f);
+
             // handles sprinting
             if (isSprinting && moveSpeed != speeds[SpeedState.Fast])
             {
                 ChangeSpeed(speeds[SpeedState.Fast]);
                 stamina.Behaviour = StatusBehaviour.Degrade; // use stamina 
             }
-            else if (!isSprinting && moveSpeed != speeds[SpeedState.Normal])
+            else if (!isExhausted && !isSprinting && moveSpeed != speeds[SpeedState.Normal])
             {
                 ChangeSpeed(speeds[SpeedState.Normal]);
                 stamina.Behaviour = StatusBehaviour.Regen; // restore stamina
+            }
+        }
+
+        #endregion
+
+        #region api
+
+        /// <summary>
+        /// Called when the stamina status either reaches full or empty.
+        /// Makes the player extra slow when they run out of stamina and remain that way until the stamina
+        /// reaches max.
+        /// </summary>
+        /// <param name="exhausted">A bool that determines if the player is exhausted or not.</param>
+        public void IsExhausted(bool exhausted)
+        {
+            isExhausted = exhausted;
+            moveSpeed = isExhausted ? speeds[SpeedState.Slow] : speeds[SpeedState.Normal];
+
+            // start regenerating stamina once exhausted
+            if (isExhausted)
+            {
+                stamina.Behaviour = StatusBehaviour.Regen;
             }
         }
 
