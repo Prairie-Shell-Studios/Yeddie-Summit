@@ -1,3 +1,5 @@
+using PrairieShellStudios.Status;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,9 +21,14 @@ namespace PrairieShellStudios.Player
         private Vector2 moveVal;
         [SerializeField] float turnSmoothTime = 0.1f;
         private float turnSmoothVelocity;
-        [SerializeField] private float walkSpeed;
         [SerializeField] private float moveSpeed;
-        [SerializeField] private float sprintSpeed;
+        [SerializeField]
+        private Dictionary<SpeedState, float> speeds = new Dictionary<SpeedState, float>()
+        {
+            { SpeedState.Slow, 1f },
+            { SpeedState.Normal, 3f},
+            { SpeedState.Fast, 9f}
+        };
         private bool isSprinting = false;
 
         [Header("Jumping")]
@@ -62,7 +69,7 @@ namespace PrairieShellStudios.Player
         {
             controller = GetComponent<CharacterController>();
             camTransform = Camera.main.transform;
-            moveSpeed = walkSpeed;
+            moveSpeed = speeds[SpeedState.Normal];
         }
 
         void FixedUpdate()
@@ -146,16 +153,20 @@ namespace PrairieShellStudios.Player
         private void HandleSprinting()
         {
             // handles sprinting
-            if (isSprinting && moveSpeed != sprintSpeed)
+            if (isSprinting && moveSpeed != speeds[SpeedState.Fast])
             {
-                ChangeSpeed(sprintSpeed);
+                ChangeSpeed(speeds[SpeedState.Fast]);
+                stamina.Behaviour = StatusBehaviour.Degrade; // use stamina 
             }
-            else if (!isSprinting && moveSpeed != walkSpeed)
+            else if (!isSprinting && moveSpeed != speeds[SpeedState.Normal])
             {
-                ChangeSpeed(walkSpeed);
+                ChangeSpeed(speeds[SpeedState.Normal]);
+                stamina.Behaviour = StatusBehaviour.Regen; // restore stamina
             }
         }
 
         #endregion
     }
+
+    public enum SpeedState { Slow, Normal, Fast };
 }
