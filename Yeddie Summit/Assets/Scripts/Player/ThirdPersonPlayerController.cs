@@ -32,6 +32,9 @@ namespace PrairieShellStudios.Player
         private bool isJumping = false;
         private float gravityValue = -9.81f;
 
+        [Header("Status")]
+        [SerializeField] private StatusScriptableObject stamina;
+
         #endregion
 
         #region actions
