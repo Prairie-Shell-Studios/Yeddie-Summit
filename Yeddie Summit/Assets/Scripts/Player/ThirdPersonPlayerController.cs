@@ -8,6 +8,10 @@ namespace PrairieShellStudios.Player
     /// <summary>
     /// Uses the new Unity Input System to control the players movement.
     /// Current implementation allows the player to move, jump, and sprint.
+    /// Stamina is now coupled to this script.
+    /// TODO: uncouple stamina from this script by possibly creating a new script that
+    /// handles sprinting separately. It can be added optionally. Two implementations,
+    /// 1 for with stamina and another for without it.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class ThirdPersonPlayerController : MonoBehaviour
@@ -147,7 +151,6 @@ namespace PrairieShellStudios.Player
                 Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 controller.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
             }
-
         }
 
         /// <summary>
