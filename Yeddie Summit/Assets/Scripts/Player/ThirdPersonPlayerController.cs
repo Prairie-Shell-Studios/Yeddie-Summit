@@ -149,7 +149,8 @@ namespace PrairieShellStudios.Player
             if (direction.magnitude >= 0.1f)
             {
                 Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                controller.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
+                Vector3 moveVelocity = AdjustVelocityToSlope(moveDirection * moveSpeed);
+                controller.Move(moveVelocity.normalized * Time.deltaTime);
             }
         }
 
@@ -193,6 +194,34 @@ namespace PrairieShellStudios.Player
             {
                 stamina.Behaviour = StatusBehaviour.Regen;
             }
+        }
+
+        #endregion
+
+        #region utility
+
+        /// <summary>
+        /// Takes the current player velocity and adjusts its basis so to be parallel to the surface
+        /// or slope that they are on.
+        /// </summary>
+        /// <param name="velocity">The current player velocity.</param>
+        /// <returns>A Vector3 with the new basis applied to the player velocity.</returns>
+        private Vector3 AdjustVelocityToSlope(Vector3 velocity)
+        {
+            Ray ray = new Ray(transform.position, Vector3.down);
+
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.2f))
+            {
+                Quaternion slopeRotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+                Vector3 adjustedVelocity = slopeRotation * velocity;
+
+                if (adjustedVelocity.y < 0f)
+                {
+                    return adjustedVelocity;
+                }
+            }
+
+            return velocity;
         }
 
         #endregion
