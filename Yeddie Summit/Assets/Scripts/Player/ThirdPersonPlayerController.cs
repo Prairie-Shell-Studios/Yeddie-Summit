@@ -149,8 +149,8 @@ namespace PrairieShellStudios.Player
             if (direction.magnitude >= 0.1f)
             {
                 Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                Vector3 moveVelocity = AdjustVelocityToSlope(moveDirection * moveSpeed);
-                controller.Move(moveVelocity.normalized * Time.deltaTime);
+                moveDirection = AdjustVelocityToSlope(moveDirection);
+                controller.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
             }
         }
 
@@ -169,7 +169,10 @@ namespace PrairieShellStudios.Player
             }
             else if (!isExhausted && !isSprinting && moveSpeed != speeds[SpeedState.Normal])
             {
-                ChangeSpeed(speeds[SpeedState.Normal]);
+                if (isGrounded) // change speed back to normal only when player is grounded
+                { 
+                    ChangeSpeed(speeds[SpeedState.Normal]); 
+                }
                 stamina.Behaviour = StatusBehaviour.Regen; // restore stamina
             }
         }
