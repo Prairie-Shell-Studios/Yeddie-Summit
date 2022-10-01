@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using PrairieShellStudios.EventSystemSO;
 using PrairieShellStudios.Timer;
-using System;
-
+using UnityEngine;
 
 namespace PrairieShellStudios.Status
 {
@@ -32,6 +29,10 @@ namespace PrairieShellStudios.Status
         [SerializeField]
         private float behaviourRate = 5f;
 
+        [SerializeField] private GameEventScriptableObject fullEvent;
+        [SerializeField] private GameEventScriptableObject emptyEvent;
+
+
         #endregion
 
         #region properties
@@ -53,6 +54,8 @@ namespace PrairieShellStudios.Status
             get => current;
             set 
             {
+                HandleEvents(value);
+                
                 if (value <= max && value >= min)
                 {
                     current = value;
@@ -151,7 +154,28 @@ namespace PrairieShellStudios.Status
         }
 
         #endregion
-        
+
+        #region utility
+
+        /// <summary>
+        /// Raise the appropriate event depending on the new state of the status.
+        /// Raise fullEvent when current reaches max value.
+        /// Raise emptyEvent when current reaches min value.
+        /// </summary>
+        /// <param name="value">The new value of current.</param>
+        private void HandleEvents(int value)
+        {
+            if (fullEvent != null && current < max && value >= max)
+            {
+                fullEvent.Raise();
+            }
+            else if (emptyEvent != null && current > min && value <= min)
+            {
+                emptyEvent.Raise();
+            }
+        }
+
+        #endregion
     }
 
     #region enums

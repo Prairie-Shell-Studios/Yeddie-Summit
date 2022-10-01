@@ -1,0 +1,184 @@
+# Modular Input System
+- Input that triggers an action is kept separate from the script that actually makes it happen.
+- Meaning that keys can be rebound.
+- Instead of the script listening for an input trigger, it listens for an action.
+	- The action is bound to one or more input triggers.
+- There are now 3 steps:
+	- The input, the action, and the function.
+	- e.g. Jump Button 1 and Jump Button 2, Jump action, and Jump Function.
+# New Input System
+- Always need to import the `Input System` package from the Unity Registry.
+- It is possible to use this new system just like the old system.
+- Does contain **Actions** and **Control Schemes** that need to be setup if you wish to take full advantage of the new system.
+## Main Parts of the New Input System
+1. Input Actions Assets
+	- Store sets of Control Schemes, Action Maps Actions and their Bindings.
+2. Control Schemes
+	- Define device combinations that the player can use.
+	- e.g. keyboard and mouse, gamepad, etc.
+3. Action Maps
+	- Separate different types of activity.
+	- e.g. menu controls, gameplay, driving.
+4. Actions
+	- Single events that will trigger functions in the scene.
+	- e.g. Jump, Fire, Move, etc.
+5. Bindings
+	- The physical conrols, specific to a Control Scheme, that will trigger Actions.
+	- e.g. spacebar, left stick, etc.
+6. Player Input Component
+	- Used to connect all of the above to a player object.
+## First Step
+1. You need to create an **Input Actions Asset** before you do anything else.
+	- Create one by right-clicking the Project window and then click `Create>Input Actions`.
+	- Or you can select `Assets>Create>Input Actions` from the menu.
+	- After creating the Input Actions Asset, double-click it to open the **Input Actions Asset Editor**.
+2. The next step is to create a **Control Scheme**.
+	- Common schemes are:
+		- Keyboard & Mouse
+		- Gamepad
+		- Steering Wheel
+		- etc.
+	- You don't actually need to create a separate Control Scheme at all.
+		- You can just add all of your Actions with Bindings from each type of device you want to support.
+	- The benefits to using different schemes is knowing which controls are being used to display helpful instructions on how to play.
+	- It is also useful for local multiplayer.
+	- Create a new Control Scheme by clicking the *Control Scheme dropdown* in the top left-hand corner of the Input Actions editor.
+	- Then you need to specify what types of devices it should accept input from (required and optional).
+	- Be careful to not create 2 Control Schemes in the same asset that each require the same type of device.
+3. Next you will want to create at least one **Action Map**.
+	- Typically, all of the general actions that a Character does is in one Action Map.
+		- Called `Player` or `Gameplay`.
+	- Use multiple Action Maps when there is a sensible difference in the controls used.
+		- e.g. general, driving, menu, etc.
+	- Keeping Actions separated into Action Maps allows the player to change keybindings related to specific situations.
+		- e.g. changing the driving keybindings won't change the gameplay keybindings.
+	- You can switch between different Action Maps at runtime.
+4. Now that you have an Action Map, you want to start adding **Actions**.
+	- Action examples include moving the player, jumping, firing a gun, etc..
+	- Actions are specific to Action Maps, while Bindings that you apply to Actions are specific to individual Control Schemes.
+	- Actions are quite involved and have everal properties.
+5. Once you've created an Action, you need to set the **Action Type**.
+	- The Action Type determines how an Action should be triggered.
+	- If you're using Value or Pass Through Action Types, you'll see an additional option to set the **Control Type**.
+	- Control Type allows you to specify what type of input you're expecting to get from the input and affects which Bindings are available.
+6. The next step is to actually connect the Action to a **Binding**.
+### Gamepad or Joystick?
+- Gamepad typically refers to a controller with a modern layout, such as thumbsticks, triggers and a set of four face buttons.
+- Joystick Control Scheme will let you support third-party controllers on desktop platforms.
+## Action Types
+There are 3 different types:
+1. Button
+	- The default setting.
+	- For one-shot actions triggered by a button or key press.
+2. Value
+	- Provides continuous state changes as they happen.
+	- Switches to whichever one is most dominant if there are multiple inputs set up.
+	- Used for analogue controls.
+	- e.g. movement.
+3. Pass Through
+	- Works the same way as Value except that disambiguation process, where the most dominant device is selected, is ignored.
+	
+In general, pick **Button** whenever you need to trigger an Action once with a control.
+**Value** and **Pass Through** are suitable for continuous analogue controls, such as movement or accelerator controls.
+To determine if a control is held down, **Value** is typically used.
+## Bindings
+There are several different types of Bindings available.
+1. Binding
+	- The default.
+	- Connects a single control via its **Binding Path**.
+	- The Binding Path could be a keyboard key, an analogue trigger, or even the left stick of a controller.
+
+### Two Dimension Composite Axis
+
+Ideal for player movement. The value you get from this will change depending on the **Composite Type**. This will change the how the two axes affect each other.
+
+Digital:
+- Provides a square response.
+- So an input of up and right will provide an output of [1,1].
+- Can be used for tank movement.
+
+Digital Normalized:
+- Works the same way as Digital except that the vector is normalized.
+- So an input of up and right will provide an output of [0.7, 0.7].
+- Means that your player will move at the same speed when moving diagonally.
+- Use for WASD movement bindings.
+
+Analogue Mode:
+- Only used for analogue controls like a joystick or gamepad.
+- Does not work for discrete WASD bindings.
+
+## Menu (UI) Controls
+
+You may choose to setup another **Action Map** called `Menu`, or you could use the **Input System UI Module** which has default **Action Maps**.
+
+## Binding "Usages"
+
+Usages allow you to specify a general use to the binding. This could include "Submit", or "Enter", or "Back". This is useful when implementing a gamepad as a **control scheme** because a Nintendo controller has different defaults than an Xbox controller.
+
+## Recognizing Multiple Button Presses
+
+Can be done using Button with a Modifier Composite
+
+## Interactions and Processors
+
+Both change how input is interpreted.
+
+**Interactions** change what is required for an input to trigger an Action, while **Processors** modify the value that’s received.
+
+### Interactions
+
+Can be added to an Action or Binding.
+
+Examples:
+- Quick tapping a binding.
+- Holding a binding.
+- Double-tapping a binding.
+	
+**Hold** interaction modifier:
+- The event won't trigger until the binding has been held down for a minimum amount of time.
+
+**Press** interaction modifier:
+- The event will be triggered on either the press or release of the binding or both.
+
+**Multi-tap** interaction modifier:
+- The event will be triggered when a binding is pressed a certain amount of times within a time period.
+
+There are also interactions for touch controls.
+
+### Processors
+
+Can be used to change how sensitive a control is, define its limits, or completely reverse it.
+
+Can be added to an Action or Binding.
+
+**Invert**
+- Multiplies the value by -1.
+- Useful for inverting controls.
+
+**Clamp**
+- Limits the value to a fixed range.
+
+**Scale**
+- Multiplies the value by a set factor.
+- Useful for adjusting control sensitivity.
+
+# Connecting Input Actions to GameObjects
+The simplest way is to use the Player Input component.
+- Add this component to your player object and configure it to work with your scripts.
+
+## Player Input Component Behaviour
+
+This will determine how the Player Input Component will communicate with other gameobjects and scripts.
+
+There are 4 options:
+- Send Messages
+- Broadcast Messages
+- Invoke Unity Events
+- Invoke C Sharp Events
+
+### Send Messages
+
+Every time an Input Action fires, it will trigger functions with the "On" prefix. e.g. if you have an Action called "Jump", then it will invoke an "OnJump" method.
+
+# Resources
+- [https://gamedevbeginner.com/input-in-unity-made-easy-complete-guide-to-the-new-system/#input_system](https://gamedevbeginner.com/input-in-unity-made-easy-complete-guide-to-the-new-system/#input_system).
