@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusName: PlayerStamina
   max: 100
-  current: 80
+  current: 100
   min: 0
   behaviour: 1
-  behaviourRate: 0.25
+  behaviourRate: 0.08
   fullEvent: {fileID: 11400000, guid: 1e93bbe8c33eba24c89ac1e16af0586c, type: 2}
   emptyEvent: {fileID: 11400000, guid: 78253e55ace75eb4792e213ca1eeb27d, type: 2}
