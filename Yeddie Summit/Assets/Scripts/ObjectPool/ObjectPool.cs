@@ -7,7 +7,7 @@ public class ObjectPool : MonoBehaviour
     #region fields
 
     [SerializeField] private GameObject prefab;
-    [SerializeField] private int size = 25;
+    [SerializeField] private int size = 20;
     private List<GameObject> pool;
     
     #endregion
@@ -24,9 +24,9 @@ public class ObjectPool : MonoBehaviour
     #region api
 
     /// <summary>
-    /// Goes through the
+    /// Goes through the pool to determine if there's an object that is inactive.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>True when there exists an inactive object in the pool and false otherwise.</returns>
     public bool HasSpawnable()
     {
         bool hasSpawnable = false;
@@ -44,6 +44,7 @@ public class ObjectPool : MonoBehaviour
 
     /// <summary>
     /// Actives an inactive GO in the pool and aligns it with the transform.
+    /// When there is no available prefab to set to active, it does nothing.
     /// </summary>
     /// <param name="spawnTransform">The transform of where the prefab will be spawned.</param>
     public void SpawnObject(Transform spawnTransform)
@@ -75,7 +76,7 @@ public class ObjectPool : MonoBehaviour
         {
             for (int count = 0; count < size; count++)
             {
-                pool.Add(Instantiate(prefab));
+                pool.Add(Instantiate(prefab, this.transform));
                 pool[pool.Count - 1].SetActive(false);
             }
         }
