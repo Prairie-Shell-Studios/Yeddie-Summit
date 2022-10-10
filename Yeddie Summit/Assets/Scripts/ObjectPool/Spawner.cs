@@ -14,7 +14,7 @@ public class Spawner : MonoBehaviour
     #region fields
 
     private ObjectPooler objectPooler;
-    [SerializeField] private bool randomizeSpawnObjects = false;
+    //[SerializeField] private bool randomizeSpawnObjects = false;
     [SerializeField] private string spawnTag;
     [SerializeField] private float rate = 5f;
     [SerializeField] private bool spawnOnStart = true;
@@ -111,15 +111,18 @@ public class Spawner : MonoBehaviour
 
         if (randomizePosition)
         {
+            Vector2 randomPoint;
             if (spawnArea == SpawnArea.Rectangle)
             {
-                randomPosition = new Vector3(UnityEngine.Random.Range(minMaxX.Item1, minMaxX.Item2), 
-                    randomPosition.y, UnityEngine.Random.Range(minMaxZ.Item1, minMaxZ.Item2));
+                randomPoint = new Vector2(UnityEngine.Random.Range(minMaxX.Item1, minMaxX.Item2),
+                    UnityEngine.Random.Range(minMaxZ.Item1, minMaxZ.Item2));
+                randomPosition = new Vector3(randomPoint.x, randomPosition.y, randomPoint.y);
             }
             else if (spawnArea == SpawnArea.Circle)
             {
-                Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * radius;
-                randomPosition = new Vector3(randomPoint.x, randomPosition.y, randomPoint.y);
+                randomPoint = UnityEngine.Random.insideUnitCircle * radius;
+                randomPosition = new Vector3(transform.position.x + randomPoint.x, randomPosition.y, 
+                    transform.position.z + randomPoint.y);
             }
         }
 
