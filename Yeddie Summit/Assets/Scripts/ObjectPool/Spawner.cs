@@ -63,7 +63,7 @@ public class Spawner : MonoBehaviour
             if (timer.HasExpired())
             {
                 //string poolTag = GetRandomSpawnObject();
-                objectPooler?.SpawnFromPool(spawnTag, GetRandomPosition(), Quaternion.identity);
+                objectPooler?.SpawnFromPool(spawnTag, GetRandomPosition(), Quaternion.identity, Vector3.one);
                 timer.Reset();
             }
         }

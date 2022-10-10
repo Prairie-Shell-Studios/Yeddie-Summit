@@ -52,8 +52,9 @@ public class ObjectPooler : MonoBehaviour
     /// <param name="tag">A string representing the pool in which to instantiate objects from.</param>
     /// <param name="position">The position to place the newly enabled game object.</param>
     /// <param name="rotation">The rotation to orientate the newly enabled game object.</param>
+    /// <param name="scale">The scale to size the newly enabled game object.</param>
     /// <returns></returns>
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, Vector3 scale)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -74,6 +75,7 @@ public class ObjectPooler : MonoBehaviour
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
+        objectToSpawn.transform.localScale = scale;
 
         objectToSpawn.GetComponent<IPooledObject>()?.OnObjectSpawn();
 
