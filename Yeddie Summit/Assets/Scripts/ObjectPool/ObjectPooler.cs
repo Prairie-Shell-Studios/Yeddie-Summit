@@ -39,8 +39,6 @@ public class ObjectPooler : MonoBehaviour
 
     void Start()
     {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
-
         Init();
     }
 
@@ -94,6 +92,8 @@ public class ObjectPooler : MonoBehaviour
     /// </summary>
     private void Init()
     {
+        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+
         foreach (Pool pool in pools)
         {
             // create a parent empty gameobject to keep hierarchy organized

@@ -14,16 +14,19 @@ public class Spawner : MonoBehaviour
     #region fields
 
     private ObjectPooler objectPooler;
-    [SerializeField] private string poolTag;
+    [SerializeField] private bool randomizeSpawnObjects = false;
+    [SerializeField] private string spawnTag;
     [SerializeField] private float rate = 5f;
     [SerializeField] private bool spawnOnStart = true;
     private bool isActive = false;
-    SimpleTimer timer;
+    private SimpleTimer timer;
 
     [Header("Randomized Position")]
     [SerializeField] private bool randomizePosition = false;
+    [SerializeField] private SpawnArea spawnArea = SpawnArea.Rectangle;
     [SerializeField] [Min(0)] private float width = 10f; // x
     [SerializeField] [Min(0)] private float length = 10f; // z
+    [SerializeField] [Min(0)] private float radius = 20f;
     [SerializeField] private bool showBounds = false;
     private Tuple<float, float> minMaxX;
     private Tuple<float, float> minMaxZ;
@@ -59,7 +62,8 @@ public class Spawner : MonoBehaviour
         {
             if (timer.HasExpired())
             {
-                objectPooler?.SpawnFromPool(poolTag, GetRandomPosition(), Quaternion.identity);
+                //string poolTag = GetRandomSpawnObject();
+                objectPooler?.SpawnFromPool(spawnTag, GetRandomPosition(), Quaternion.identity);
                 timer.Reset();
             }
         }
@@ -69,7 +73,14 @@ public class Spawner : MonoBehaviour
     {
         if (showBounds)
         {
-            Gizmos.DrawWireCube(transform.position, new Vector3(2 * width, 0f, 2 * length));
+            if (spawnArea == SpawnArea.Rectangle)
+            {
+                Gizmos.DrawWireCube(transform.position, new Vector3(2 * width, 0f, 2 * length));
+            }
+            else if (spawnArea == SpawnArea.Circle)
+            {
+                Gizmos.DrawWireSphere(transform.position, radius);
+            }
         }
     }
 
@@ -100,12 +111,37 @@ public class Spawner : MonoBehaviour
 
         if (randomizePosition)
         {
-            randomPosition = new Vector3(UnityEngine.Random.Range(minMaxX.Item1, minMaxX.Item2), 
-                randomPosition.y, UnityEngine.Random.Range(minMaxZ.Item1, minMaxZ.Item2));
+            if (spawnArea == SpawnArea.Rectangle)
+            {
+                randomPosition = new Vector3(UnityEngine.Random.Range(minMaxX.Item1, minMaxX.Item2), 
+                    randomPosition.y, UnityEngine.Random.Range(minMaxZ.Item1, minMaxZ.Item2));
+            }
+            else if (spawnArea == SpawnArea.Circle)
+            {
+                Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * radius;
+                randomPosition = new Vector3(randomPoint.x, randomPosition.y, randomPoint.y);
+            }
         }
 
         return randomPosition;
     }
 
+    //private string GetRandomSpawnObject()
+    //{
+    //    string randomSpawnTag = spawnObjects[UnityEngine.Random.Range(0, spawnObjects.Count)].Item1;
+    //    if (randomizeSpawnObjects)
+    //    {
+    //        // TODO: randomize spawn object
+    //    }
+
+    //    return randomSpawnTag;
+    //}
+
     #endregion
 }
+
+#region enums
+
+public enum SpawnArea { Rectangle, Circle }
+
+#endregion
