@@ -24,6 +24,17 @@ public class ObjectPooler : MonoBehaviour
 
     #endregion
 
+    #region singleton
+    
+    public static ObjectPooler Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    #endregion
+
     #region monobehaviour
 
     void Start()
@@ -54,6 +65,14 @@ public class ObjectPooler : MonoBehaviour
 
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
+        // TODO: move to the GO being spawned
+        // if the game object has a rigidbody then reset it's velocity
+        Rigidbody gObjectRB = objectToSpawn.GetComponent<Rigidbody>();
+        if (gObjectRB != null)
+        {
+            gObjectRB.velocity = Vector3.zero;
+        }
+
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
@@ -77,11 +96,14 @@ public class ObjectPooler : MonoBehaviour
     {
         foreach (Pool pool in pools)
         {
+            // create a parent empty gameobject to keep hierarchy organized
+            GameObject parentGO = Instantiate(new GameObject(pool.tag + "pool"), transform);
+
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
             for (int index = 0; index < pool.size; index++)
             {
-                GameObject gObject = Instantiate(pool.prefab);
+                GameObject gObject = Instantiate(pool.prefab, parentGO.transform);
                 gObject.SetActive(false);
                 objectPool.Enqueue(gObject);
             }

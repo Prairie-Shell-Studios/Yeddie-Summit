@@ -13,7 +13,8 @@ public class Spawner : MonoBehaviour
 
     #region fields
 
-    [SerializeField] private ObjectPool pool;
+    private ObjectPooler objectPooler;
+    [SerializeField] private string poolTag;
     [SerializeField] private float rate = 5f;
     [SerializeField] private bool spawnOnStart = true;
     private bool isActive = false;
@@ -42,6 +43,8 @@ public class Spawner : MonoBehaviour
     /// </summary>
     void Start()
     {
+        objectPooler = ObjectPooler.Instance;
+
         timer = new SimpleTimer(TimerDirection.CountDown, rate);
 
         if (spawnOnStart)
@@ -56,7 +59,7 @@ public class Spawner : MonoBehaviour
         {
             if (timer.HasExpired())
             {
-                pool?.SpawnObject(GetRandomTransform());
+                objectPooler?.SpawnFromPool(poolTag, GetRandomPosition(), Quaternion.identity);
                 timer.Reset();
             }
         }
@@ -91,18 +94,17 @@ public class Spawner : MonoBehaviour
 
     #region utility
 
-    protected Transform GetRandomTransform()
+    protected Vector3 GetRandomPosition()
     {
-        Transform randomTransform = this.transform;
+        Vector3 randomPosition = this.transform.position;
 
         if (randomizePosition)
         {
-            Vector3 randomPosition = new Vector3(UnityEngine.Random.Range(minMaxX.Item1, minMaxX.Item2), 
-                randomTransform.position.y, UnityEngine.Random.Range(minMaxZ.Item1, minMaxZ.Item2));
-            randomTransform.position = randomPosition;
+            randomPosition = new Vector3(UnityEngine.Random.Range(minMaxX.Item1, minMaxX.Item2), 
+                randomPosition.y, UnityEngine.Random.Range(minMaxZ.Item1, minMaxZ.Item2));
         }
 
-        return randomTransform;
+        return randomPosition;
     }
 
     #endregion
