@@ -55,6 +55,8 @@ namespace PrairieShellStudios.Timer
             }
         }
 
+        public bool IsActive { get => isActive; }
+
         #endregion
 
         #region constructor(s)

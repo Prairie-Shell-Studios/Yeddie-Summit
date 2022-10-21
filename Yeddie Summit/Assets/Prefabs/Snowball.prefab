@@ -130,6 +130,11 @@ MonoBehaviour:
   growthRate: 1
   growthInc: 0.1
   initialScale: 0.5
+  maxScale: 2
   minSplitScale: 1.5
-  growthTagFilter: Terrain
-  destroyTagFilter: Player
+  growthMask:
+    serializedVersion: 2
+    m_Bits: 512
+  destroyMask:
+    serializedVersion: 2
+    m_Bits: 320
