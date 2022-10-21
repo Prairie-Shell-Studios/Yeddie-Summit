@@ -1,6 +1,4 @@
 using PrairieShellStudios.Timer;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PrairieShellStudios
@@ -15,11 +13,12 @@ namespace PrairieShellStudios
         [SerializeField] [Min(0f)] private float growthRate = 5f;
         [SerializeField] [Min(0.01f)] private float growthInc = 0.1f;
         [SerializeField] [Min(0.01f)] private float initialScale = 0.5f;
+        [SerializeField] [Min(0.01f)] private float maxScale = 2f;
         private float currentScale;
-        [SerializeField] [Min(0.01f)] private float minSplitScale = 1.5f;
+        [SerializeField] [Min(0.01f)] private float minSplitScale = 1.0f;
         // TODO: create tag filter https://www.brechtos.com/tagselectorattribute/
-        [SerializeField] private string growthTagFilter;
-        [SerializeField] private string destroyTagFilter;
+        [SerializeField] private LayerMask growthMask;
+        [SerializeField] private LayerMask destroyMask;
 
         #endregion
 
@@ -55,13 +54,7 @@ namespace PrairieShellStudios
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag(growthTagFilter))
-            {
-                Debug.Log("Growth collision enter");
-                // start growth timer if tag is "terrain"
-                growthTimer.Start();
-            }
-            else if (collision.gameObject.CompareTag(destroyTagFilter))
+            if (IsInLayerMask(collision.gameObject, destroyMask))
             {
                 Debug.Log("Destroy collision enter");
                 // handle "prop" and "player" collisions
@@ -73,32 +66,23 @@ namespace PrairieShellStudios
                 else
                 {
                     // snowball is destroyed
-                    gameObject.SetActive(false);
+                    OnObjectDespawn();
                 }
             }
         }
 
         private void OnCollisionStay(Collision collision)
         {
-            if (collision.gameObject.CompareTag(growthTagFilter))
+            if (IsInLayerMask(collision.gameObject, growthMask))
             {
-                Debug.Log("Growth collision stay");
-                // keep growth timer going if tag is the filterTag
-                if (growthTimer.HasExpired())
-                {
-                    Debug.Log("Growth incremented");
-                    growthTimer.Reset();
-                    currentScale += growthInc;
-                    transform.localScale = currentScale * Vector3.one;
-                }
+                HandleGrowth();
             }
-
         }
 
         private void OnCollisionExit(Collision collision)
         {
             // stop the timer whenever exiting a collision with "terrain"
-            if (collision.gameObject.CompareTag(growthTagFilter))
+            if (IsInLayerMask(collision.gameObject, growthMask))
             {
                 Debug.Log("Growth collision exit");
                 growthTimer.Stop();
@@ -115,6 +99,38 @@ namespace PrairieShellStudios
 
         #region utility
 
+        private bool IsInLayerMask(GameObject checkGO, LayerMask mask)
+        {
+            // TODO: Fix to check a LayerMask with multiple layers
+            return (mask & (1 << checkGO.layer)) != 0;
+        }
+
+        private void HandleGrowth()
+        {
+            if (currentScale >= maxScale)
+            {
+                if (growthTimer.IsActive)
+                {
+                    growthTimer.Stop();
+                }
+            }
+            else
+            {
+                if (!growthTimer.IsActive)
+                {
+                    growthTimer.Start();
+                }
+
+                // keep growth timer going if tag is the filterTag
+                if (growthTimer.HasExpired())
+                {
+                    Debug.Log("Growth incremented");
+                    growthTimer.Reset();
+                    currentScale += growthInc;
+                    transform.localScale = currentScale * Vector3.one;
+                }
+            }
+        }
 
         private void HandleSplit()
         {
