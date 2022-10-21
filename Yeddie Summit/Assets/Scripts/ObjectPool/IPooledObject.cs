@@ -1,4 +1,5 @@
 public interface IPooledObject
 {
-    void OnObjectSpawn();
+    void OnObjectSpawn(int spawnCase);
+    void OnObjectDespawn();
 }
