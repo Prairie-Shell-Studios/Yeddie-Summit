@@ -131,7 +131,7 @@ MonoBehaviour:
   growthInc: 0.1
   initialScale: 0.5
   maxScale: 2
-  minSplitScale: 1.5
+  minSplitScale: 1
   growthMask:
     serializedVersion: 2
     m_Bits: 512
