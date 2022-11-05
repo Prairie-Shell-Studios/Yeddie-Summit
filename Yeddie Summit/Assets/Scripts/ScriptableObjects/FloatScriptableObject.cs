@@ -9,7 +9,7 @@ namespace PrairieShellStudios.ScriptableObjects
     /// Intended purpose is have the float value globally available to other
     /// scripts for reference.
     /// </summary>
-    [CreateAssetMenu(fileName ="Float", menuName ="ScriptableObject/Float")]
+    [CreateAssetMenu(fileName ="Float", menuName ="ScriptableObjects/Float")]
     public class FloatScriptableObject : ScriptableObject
     {
         #region fields

@@ -1,3 +1,4 @@
+using PrairieShellStudios.ScriptableObjects;
 using PrairieShellStudios.Timer;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace PrairieShellStudios
         #region fields
 
         private Rigidbody rb;
+        private SphereCollider sphereCollider;
         private ObjectPooler objectPooler;
         private SimpleTimer growthTimer;
         [SerializeField] [Min(0f)] private float growthRate = 5f;
@@ -19,6 +21,10 @@ namespace PrairieShellStudios
         // TODO: create tag filter https://www.brechtos.com/tagselectorattribute/
         [SerializeField] private LayerMask growthMask;
         [SerializeField] private LayerMask destroyMask;
+
+        [Header("Split Snowball Spawning")]
+        [SerializeField] private FloatScriptableObject raycastHeight;
+        [SerializeField] private LayerMask spawnMask;
 
         #endregion
 
@@ -99,6 +105,22 @@ namespace PrairieShellStudios
 
         #region utility
 
+        private Vector3[] GetSplitPositions()
+        {
+            Vector3[] newPos = new Vector3[2];
+            float distanceFromOther = 0.5f * sphereCollider.radius;
+            float distanceFromOriginal = sphereCollider.radius + distanceFromOther;
+
+            // cast ray to determine y coords
+            RaycastHit[] raycastHits = new RaycastHit[2];
+            for (int snowball = 0; snowball < 2; snowball++)
+            {
+
+            }
+
+            return newPos;
+        }
+
         private bool IsInLayerMask(GameObject checkGO, LayerMask mask)
         {
             // TODO: Fix to check a LayerMask with multiple layers
@@ -136,11 +158,13 @@ namespace PrairieShellStudios
         {
             Debug.Log("Split was called");
             float newScale = currentScale / 2f;
+            Vector3[] splitPos = new Vector3[2];
+            splitPos = GetSplitPositions();
             for (int _ = 0; _ < 2; _++)
             {
                 objectPooler.SpawnFromPool(
                     "snowball",
-                    transform.position,
+                    splitPos[_],
                     transform.rotation,
                     newScale * Vector3.one
                     );
@@ -152,6 +176,7 @@ namespace PrairieShellStudios
         private void Init()
         {
             rb = GetComponent<Rigidbody>();
+            sphereCollider = GetComponent<SphereCollider>();
             objectPooler = ObjectPooler.Instance;
             growthTimer = new SimpleTimer(TimerDirection.CountDown, growthRate);
             Debug.Log(growthTimer.Duration());
