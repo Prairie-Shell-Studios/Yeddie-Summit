@@ -18,7 +18,6 @@ namespace PrairieShellStudios
         [SerializeField] [Min(0.01f)] private float maxScale = 2f;
         private float currentScale;
         [SerializeField] [Min(0.01f)] private float minSplitScale = 1.0f;
-        // TODO: create tag filter https://www.brechtos.com/tagselectorattribute/
         [SerializeField] private LayerMask growthMask;
         [SerializeField] private LayerMask destroyMask;
 
@@ -63,7 +62,7 @@ namespace PrairieShellStudios
         {
             if (IsInLayerMask(collision.gameObject, destroyMask))
             {
-                Debug.Log("Destroy collision enter");
+                //Debug.Log("Destroy collision enter");
                 // handle "prop" and "player" collisions
                 if (currentScale >= minSplitScale)
                 {
@@ -92,15 +91,9 @@ namespace PrairieShellStudios
             // stop the timer whenever exiting a collision with "terrain"
             if (IsInLayerMask(collision.gameObject, growthMask))
             {
-                Debug.Log("Growth collision exit");
+                //Debug.Log("Growth collision exit");
                 growthTimer.Stop();
             }
-        }
-
-        private void FixedUpdate()
-        {
-            // TODO: add velocity (maybe not)   
-            Debug.Log(gameObject.activeSelf);
         }
 
         #endregion
@@ -109,6 +102,7 @@ namespace PrairieShellStudios
 
         private Vector3[] GetSplitPositions(Vector3 hitDirection)
         {
+            //Debug.Log("Getting Split Positions");
             Vector3[] newPos = new Vector3[2];
             RaycastHit[] raycastHits = new RaycastHit[2];
 
@@ -132,7 +126,7 @@ namespace PrairieShellStudios
                     Debug.Log("Could not determine spawn height for split snowball due to no terrain underneath.");
                 }
 
-                placeDir = -placeDir;
+                placeDir = -placeDir; // reverse direction to place other snowball in opposite position
             }
 
             return newPos;
@@ -163,7 +157,7 @@ namespace PrairieShellStudios
                 // keep growth timer going if tag is the filterTag
                 if (growthTimer.HasExpired())
                 {
-                    Debug.Log("Growth incremented");
+                    //Debug.Log("Growth incremented");
                     growthTimer.Reset();
                     currentScale += growthInc;
                     transform.localScale = currentScale * Vector3.one;
@@ -173,7 +167,7 @@ namespace PrairieShellStudios
 
         private void HandleSplit(Vector3 hitVector)
         {
-            Debug.Log("Split was called");
+            //Debug.Log("Split was called");
             float newScale = currentScale / 2f;
             Vector3[] splitPos = new Vector3[2];
             splitPos = GetSplitPositions(hitVector.normalized);

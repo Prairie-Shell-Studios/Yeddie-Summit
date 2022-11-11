@@ -138,3 +138,8 @@ MonoBehaviour:
   destroyMask:
     serializedVersion: 2
     m_Bits: 320
+  raycastHeight: {fileID: 11400000, guid: 27893e2328270de4db1727566fcb59dd, type: 2}
+  spawnMask:
+    serializedVersion: 2
+    m_Bits: 512
+  hitForce: 5
