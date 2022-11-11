@@ -25,6 +25,7 @@ namespace PrairieShellStudios
         [Header("Split Snowball Spawning")]
         [SerializeField] private FloatScriptableObject raycastHeight;
         [SerializeField] private LayerMask spawnMask;
+        [SerializeField] [Min(0.01f)] private float hitForce = 5f;
 
         #endregion
 
@@ -67,8 +68,8 @@ namespace PrairieShellStudios
                 if (currentScale >= minSplitScale)
                 {
                     // snowball splits
-                    Vector3 hitDirection = transform.position - collision.transform.position;
-                    HandleSplit(hitDirection.normalized);
+                    Vector3 hitVector = transform.position - collision.transform.position;
+                    HandleSplit(hitVector);
                 }
                 else
                 {
@@ -170,20 +171,22 @@ namespace PrairieShellStudios
             }
         }
 
-        private void HandleSplit(Vector3 hitDirection)
+        private void HandleSplit(Vector3 hitVector)
         {
             Debug.Log("Split was called");
             float newScale = currentScale / 2f;
             Vector3[] splitPos = new Vector3[2];
-            splitPos = GetSplitPositions(hitDirection);
+            splitPos = GetSplitPositions(hitVector.normalized);
             for (int _ = 0; _ < 2; _++)
             {
-                objectPooler.SpawnFromPool(
+                GameObject snowball = objectPooler.SpawnFromPool(
                     "snowball",
                     splitPos[_],
                     transform.rotation,
                     newScale * Vector3.one
                     );
+                Vector3 hit = hitForce * (snowball.transform.position - transform.position);
+                snowball.GetComponent<Rigidbody>()?.AddForce(hit, ForceMode.Impulse);
             }
             OnObjectDespawn();
         }
