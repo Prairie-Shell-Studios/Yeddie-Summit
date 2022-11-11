@@ -67,7 +67,8 @@ namespace PrairieShellStudios
                 if (currentScale >= minSplitScale)
                 {
                     // snowball splits
-                    HandleSplit();
+                    Vector3 hitDirection = transform.position - collision.transform.position;
+                    HandleSplit(hitDirection.normalized);
                 }
                 else
                 {
@@ -105,17 +106,32 @@ namespace PrairieShellStudios
 
         #region utility
 
-        private Vector3[] GetSplitPositions()
+        private Vector3[] GetSplitPositions(Vector3 hitDirection)
         {
             Vector3[] newPos = new Vector3[2];
-            float distanceFromOther = 0.5f * sphereCollider.radius;
-            float distanceFromOriginal = sphereCollider.radius + distanceFromOther;
-
-            // cast ray to determine y coords
             RaycastHit[] raycastHits = new RaycastHit[2];
+
+            float distanceFromOriginal = 0.75f * sphereCollider.radius;
+            Vector3 placeDir = sphereCollider.radius * Vector3.Cross(Vector3.up, hitDirection).normalized;
+
             for (int snowball = 0; snowball < 2; snowball++)
             {
+                newPos[snowball] = transform.position;
+                newPos[snowball].x += (distanceFromOriginal * hitDirection.x) + placeDir.x;
+                newPos[snowball].z += (distanceFromOriginal * hitDirection.z) + placeDir.z;
 
+                Vector3 rayCastPos = new Vector3(newPos[snowball].x, raycastHeight.Value, newPos[snowball].z);
+                // cast ray to determine y coords
+                if (Physics.Raycast(rayCastPos, Vector3.down, out raycastHits[snowball], raycastHeight.Value, spawnMask))
+                {
+                    newPos[snowball].y = raycastHits[snowball].point.y;
+                }
+                else
+                {
+                    Debug.Log("Could not determine spawn height for split snowball due to no terrain underneath.");
+                }
+
+                placeDir = -placeDir;
             }
 
             return newPos;
@@ -154,12 +170,12 @@ namespace PrairieShellStudios
             }
         }
 
-        private void HandleSplit()
+        private void HandleSplit(Vector3 hitDirection)
         {
             Debug.Log("Split was called");
             float newScale = currentScale / 2f;
             Vector3[] splitPos = new Vector3[2];
-            splitPos = GetSplitPositions();
+            splitPos = GetSplitPositions(hitDirection);
             for (int _ = 0; _ < 2; _++)
             {
                 objectPooler.SpawnFromPool(
@@ -168,7 +184,6 @@ namespace PrairieShellStudios
                     transform.rotation,
                     newScale * Vector3.one
                     );
-                // TODO: add force to new spawns
             }
             OnObjectDespawn();
         }
