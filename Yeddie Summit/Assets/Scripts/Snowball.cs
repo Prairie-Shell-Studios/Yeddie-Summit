@@ -26,6 +26,10 @@ namespace PrairieShellStudios
         [SerializeField] private LayerMask spawnMask;
         [SerializeField] [Min(0.01f)] private float hitForce = 5f;
 
+        [Header("Despawning")]
+        private SimpleTimer despawnTimer;
+        [SerializeField] private float despawnTimerDuration = 3f;
+
         #endregion
 
         #region IPooledObject interface
@@ -52,6 +56,31 @@ namespace PrairieShellStudios
         {
             // TODO: add FX
             gameObject.SetActive(false);
+        }
+
+        private void FixedUpdate()
+        {
+            // snowball is stationary (ie stuck)
+            if (rb.velocity == Vector3.zero)
+            {
+                // start timer if not active
+                if (!despawnTimer.IsActive)
+                {
+                    despawnTimer.Reset();
+                    despawnTimer.Start();
+                }
+                // timer has expired so stop it and despawn object
+                if (despawnTimer.HasExpired())
+                {
+                    despawnTimer.Stop();
+                    OnObjectDespawn();
+                }
+            }
+            // turn timer off when active
+            else if (despawnTimer.IsActive)
+            {
+                despawnTimer.Stop();
+            }
         }
 
         #endregion
@@ -191,7 +220,7 @@ namespace PrairieShellStudios
             sphereCollider = GetComponent<SphereCollider>();
             objectPooler = ObjectPooler.Instance;
             growthTimer = new SimpleTimer(TimerDirection.CountDown, growthRate);
-            Debug.Log(growthTimer.Duration());
+            despawnTimer = new SimpleTimer(TimerDirection.CountDown, despawnTimerDuration);
         }
 
         #endregion
