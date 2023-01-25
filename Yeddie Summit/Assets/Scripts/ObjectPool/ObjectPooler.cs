@@ -99,7 +99,8 @@ public class ObjectPooler : MonoBehaviour
         foreach (Pool pool in pools)
         {
             // create a parent empty gameobject to keep hierarchy organized
-            GameObject parentGO = Instantiate(new GameObject(pool.tag + "pool"), transform);
+            GameObject parentGO = new GameObject(pool.tag + "pool");
+            parentGO.transform.parent = this.gameObject.transform;
 
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
