@@ -130,7 +130,7 @@ MonoBehaviour:
   growthRate: 1
   growthInc: 0.1
   initialScale: 0.5
-  maxScale: 2
+  maxScale: 5
   minSplitScale: 1
   growthMask:
     serializedVersion: 2
@@ -142,5 +142,5 @@ MonoBehaviour:
   spawnMask:
     serializedVersion: 2
     m_Bits: 512
-  hitForce: 5
+  hitForce: 10
   despawnTimerDuration: 3

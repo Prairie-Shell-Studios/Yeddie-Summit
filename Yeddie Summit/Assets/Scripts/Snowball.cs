@@ -49,7 +49,7 @@ namespace PrairieShellStudios
             {
                 currentScale = transform.localScale.x;
             }
-            
+
             // stop movement
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
@@ -96,7 +96,6 @@ namespace PrairieShellStudios
         {
             if (IsInLayerMask(collision.gameObject, destroyMask))
             {
-                Debug.Log("Destroy collision enter");
                 // handle "prop" and "player" collisions
                 if (currentScale >= minSplitScale)
                 {
@@ -109,14 +108,6 @@ namespace PrairieShellStudios
                     // snowball is destroyed
                     OnObjectDespawn();
                 }
-            }
-            else if (IsInLayerMask(collision.gameObject, growthMask))
-            {
-                Debug.Log("Growth collision entered");
-            }
-            else
-            {
-                Debug.Log("Other collision entered:\t" + collision.gameObject.name);
             }
         }
 
