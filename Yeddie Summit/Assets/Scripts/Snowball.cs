@@ -49,6 +49,11 @@ namespace PrairieShellStudios
             {
                 currentScale = transform.localScale.x;
             }
+            
+            // stop movement
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
             growthTimer.Reset();
         }
 
