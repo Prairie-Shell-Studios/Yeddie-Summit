@@ -133,7 +133,7 @@ namespace PrairieShellStudios.ObjectPlacement
             {
                 if (collection.CanSpawn(perlinValue, hit.point.y))
                 {
-                    collection.InstantiatePlaceableObject(hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                    collection.InstantiatePlaceableObject(hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal), this.gameObject.transform);
                 }
             }
         }

@@ -52,7 +52,7 @@ namespace PrairieShellStudios.ObjectPlacement
 
         #region instantiation
 
-        public GameObject InstantiatePlaceableObject(Vector3 position, Quaternion rotation)
+        public GameObject InstantiatePlaceableObject(Vector3 position, Quaternion rotation, Transform parent)
         {
             if (placeableObjects.Count == 0)
             {
@@ -70,6 +70,8 @@ namespace PrairieShellStudios.ObjectPlacement
             {
                 clone = RandomizeObject().Instantiate(position, Quaternion.identity);
             }
+
+            clone.gameObject.transform.parent = parent;
 
             return clone;
         }
