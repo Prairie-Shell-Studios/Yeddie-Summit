@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade63e6c7b9eb974897da4378379e6f5, type: 3}
+  m_Name: PlayerHealth
+  m_EditorClassIdentifier: 
+  statusName: PlayerHealth
+  max: 100
+  current: 69
+  min: 0
+  behaviour: 1
+  behaviourRate: 5
+  fullEvent: {fileID: 0}
+  emptyEvent: {fileID: 11400000, guid: c5dd3f5af8a23414fb392f36d309c92f, type: 2}

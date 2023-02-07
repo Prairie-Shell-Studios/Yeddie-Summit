@@ -1,0 +1,83 @@
+# Pre-Planning
+## Features
+1. Snowball Behaviour
+2. Snowball Spawning
+3. Player Movement
+4. Camera Movement
+5. Random Prop Placer
+6. Mountain Generation
+7. Game Flow
+8. Player Stats
+## Snowball Behaviour
+- Continuously move downwards.
+- Grow in size will moving and in contact with ground.
+- Split into two half-sized snowballs upon collision with a prop or player.
+- Rotate when moving.
+## Snowball Spawning
+- Object pooling for spawning.
+- Decide on spawning mechanism.
+- Create snowball GO prefab.
+### Mechanism Options
+A. Spawn from the sky.
+	- Easier to implement. (A)
+	- Makes logical sense for players. (A)
+	- Player can get killed without warning if under recently spawned falling snowball. (D)
+	- Removes the needed modelling of a "source". (A)
+	- The higher up the player is, the easier it will be. (D/A)
+B. Spawn from a "source" that is positioned on the mountain.
+	- More difficult to implement. (D) 
+	- Provides a spawner package as a by-product. (A)
+	- Makes less logical sense for players. (D)
+	- Player will not get unexpectedly killed from falling snowballs. (A)
+	- Allows creative source concept. (A)
+	- Does not require a "source" concept and could instead spawn at a really small size. (A)
+## Player Movement
+- Research for desired implementation of player movement.
+- Ability to move in basic directions.
+- Abiliy to sprint for a fixed duration.
+- Ability to jump.
+- Player GO prefab.
+### Notes
+- Only implementing keyboard & mouse for prototype.
+## Camera Movement
+- Research 3rd person camera movement implementations.
+- Implement basic mouse camera movement.
+### Notes
+- Utilize cinemachine implementation.
+## Random Prop Placer
+- Implement procedural prop placement using Perlin noise.
+- Create placeholder prefab for placeable prop.
+- Refactor current implementation.
+- Enable a cutoff height for props to be placed.
+- Create custom editor for implementation.
+### Notes
+- Already mostly completed for Prototype milestone.
+## Mountain Generation
+- Enable the bunching of middle points to provide a more peaked mountain.
+- Move the bunched middle points to the opposite side that the player will spawn on to ensure that the player can climb the slopes.
+- Improve the noise generation to create more "jagged/rocky" slope changes.
+- Implement some procedural cave generation to encourage exploration.
+### Notes
+- Already complete for Prototype milestone.
+- Improvements can be done in Post-Prototype milestone.
+## Game Flow
+- Create beginning GUI for the player to see when they start the game.
+- Create the beginning scene for the player to see when they start the game.
+- Create a scene transition from the beginning scene to the gameplay.
+- Create a "goal" area that will spawn at/near the summit of the game.
+- Create a win GUI for when the player reaches the "goal" area.
+- Create a gameover GUI for when the player dies.
+- Create the GUI for the player stats.
+- Enable the player to play another game if they choose after winning.
+- Create a spawn point where the player will always start at.
+- Create a transition animation between scenes.
+- Allow the player to open up a menu where they can quit the game.
+## Player Stats
+- Implement player health.
+- Have collisions with "large" snowballs decrease health.
+- Have the game over trigger once the player's health reaches zero.
+- Implement player stamina.
+- Have the stamina go down as the player sprints.
+- Have the player not be able to sprint when the stamina reaches zero.
+- Have the stamina slowly increase over time when the player is not sprinting.
+- Have the player move slower when they completely run out of stamina until it is fully regenerated.

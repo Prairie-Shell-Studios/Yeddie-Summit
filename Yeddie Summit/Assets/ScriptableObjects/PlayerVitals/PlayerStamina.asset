@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade63e6c7b9eb974897da4378379e6f5, type: 3}
+  m_Name: PlayerStamina
+  m_EditorClassIdentifier: 
+  statusName: PlayerStamina
+  max: 100
+  current: 100
+  min: 0
+  behaviour: 1
+  behaviourRate: 0.08
+  fullEvent: {fileID: 11400000, guid: 1e93bbe8c33eba24c89ac1e16af0586c, type: 2}
+  emptyEvent: {fileID: 11400000, guid: 78253e55ace75eb4792e213ca1eeb27d, type: 2}

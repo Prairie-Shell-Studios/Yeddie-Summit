@@ -1,0 +1,76 @@
+# Movement Strategy
+
+## New Input System.
+
+### Input Action Asset(s)
+
+- `PlayerInput`
+
+### Control Schemes
+
+- `Keyboard & Mouse`
+- `Gamepad`
+
+For sake of simplicity, I'm implementing the `Keyboard & Mouse` scheme before doing anything with the `Gamepad` scheme.
+
+### Action Maps
+
+- `Gameplay`
+	- Used for majority of player controls.
+
+No current plans for any more since there's no vehicles or swimming. Possibly, and very ambitious, a `Climbing` map will be implemented?
+
+### Actions and Bindings
+
+#### Gameplay
+
+- `Move`
+	- Binding: wasd keys.
+	- Invoke method: `OnMove`.
+	- Priority: primary.
+- `Look`
+	- Binding: pointer delta.
+	- Invoke method: `OnLook`.
+	- Priority: primary.
+- `Sprint`
+	- Binding: shift key.
+	- Invoke method: `OnSprint`.
+	- Priority: secondary.
+- `Jump`
+	- Binding: space key.
+	- Invoke method: `OnJump`.
+	- Priority: secondary.
+- `Interact`
+	- Binding: e key.
+	- Invoke method: `OnInteract`.
+	- Priority: tertiary.
+- `Crouch`
+	- Binding: c key.
+	- Invoke method: `OnCrouch`.
+	- Priority: tertiary.
+	
+## Script Controllers
+
+### PlayerMovement
+
+Purpose: To handle the movement of the player.
+
+Involves the following actions:
+- `Move`
+- `Sprint`
+- `Jump`
+- `Crouch`
+
+### Cinemachine Freelook Camera
+
+Purpose: To handle the movement of the player camera.
+
+Involves the following actions:
+- `Look`
+
+### PlayerInteract
+
+Purpose: To handle the interaction logic for the player.
+
+Involves the following actions:
+- `Interact`
