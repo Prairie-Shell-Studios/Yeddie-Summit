@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Project
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 16
+  controlID: 57
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 17
+  controlID: 63
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -189,8 +189,8 @@ MonoBehaviour:
     y: 0
     width: 490
     height: 583
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -215,8 +215,8 @@ MonoBehaviour:
     y: 0
     width: 1083
     height: 583
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -406,21 +406,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 36f0f2fff0bdf8ffe680f9ffc28ff9ff420bfaff8ee3faffa46afbffac03fcffbe27fdffc0b1fdff3e38fefff6befeff1c50ffff02bcfffface5ffff5af4ffffd4f4ffff98870000b4870000d0870000f8870000
+      m_ExpandedIDs: d2c8fbffecc8fbff4615fcff80a7fcffa067feff5a6effffca70ffffbc73ffffd673fffff073ffffde75ffffb678ffff0c7bffff267bffff5e7cffff787cffff927cffffac7cffffc67cffff027fffffd680fffff080ffff0a81ffff2481ffff7a83ffff9483ffffae83ffff1e86ffff3886ffff5286ffff6c86ffff5687ffff7087ffff8a87ffff1089ffff2a89ffff4489ffff5e89ffff7889ffff9289ffffce8bffffe88bffff028cffff1c8cffff888dffffa28dffffbc8dffffd68dffff0e8fffff288fffff428fffff5c8fffff768fffff908fffffaa8fffff6491ffff7e91ffff9891ffffb291ffffd092ffffea92ffff0493ffff1e93ffff3893ffff3c94ffff5694ffff7094ffff8a94ffffa494ffffbe94ffffd894fffff294ffff4496ffff5e96ffff7896ffff9296ffffac96ffff9697ffffb097ffffca97ffffe497ffff3699ffff5099ffff069affff209affff3a9affffa69bfffff89cffff129dffff2c9dffff169effff309effff4a9effff009fffff1a9fffffea9fffff74a2ffff78a3ffff62a4ffff9aa5ffffb4a5ffffd6a7ffff2caaffffbae9ffff7efaffff8cfaffff9afaffffaefaffffc0faffff04fbffff12fbffff14fbffff886c0000b06c0000cc6c0000d06c0000f06c0000046d0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Snowball(Clone)
+        m_OriginalName: Snowball(Clone)
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -256702
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 8}
       m_SearchString: 
@@ -656,9 +656,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 461.82217, y: 91.82003, z: -202.61105}
+    m_Target: {x: 7.950897, y: -339.13623, z: 77.117355}
     speed: 2
-    m_Value: {x: 461.82217, y: 91.82003, z: -202.61105}
+    m_Value: {x: 7.950897, y: -339.13623, z: 77.117355}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -705,20 +705,20 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.039022304, y: 0.8395631, z: -0.060803965, w: 0.53849137}
+    m_Target: {x: 0.051229075, y: 0.9488067, z: -0.22046514, w: 0.22045709}
     speed: 2
-    m_Value: {x: 0.039021157, y: 0.83953834, z: -0.060802173, w: 0.5384755}
+    m_Value: {x: 0.051227413, y: 0.94877595, z: -0.22045799, w: 0.22044994}
   m_Size:
-    m_Target: 585.0231
+    m_Target: 686.7321
     speed: 2
-    m_Value: 559.8307
+    m_Value: 719.09125
   m_Ortho:
     m_Target: 0
     speed: 2
     m_Value: 0
   m_CameraSettings:
-    m_Speed: 1
-    m_SpeedNormalized: 0.5
+    m_Speed: 1.0646999
+    m_SpeedNormalized: 0.53
     m_SpeedMin: 0.01
     m_SpeedMax: 2
     m_EasingEnabled: 1
@@ -807,13 +807,13 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\mcqua\OneDrive\Documents\GitLab\Yeddie-Summit\Yeddie
     Summit
@@ -821,9 +821,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 66}
-    m_SelectedIDs: 00890000
-    m_LastClickedID: 35072
-    m_ExpandedIDs: 00000000e88800000089000000ca9a3bffffff7f
+    m_SelectedIDs: 0c700000
+    m_LastClickedID: 28684
+    m_ExpandedIDs: 000000005a6e00001470000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -851,7 +851,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000e8880000
+    m_ExpandedIDs: 000000005a6e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
