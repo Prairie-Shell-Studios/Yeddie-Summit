@@ -31,13 +31,11 @@ namespace PrairieShellStudios.Player
 
         public void OnTriggerEnter(Collider other)
         {
-            Debug.Log("collided");
             if (IsInLayerMask(other.gameObject, damageMask))
             {
                 // player takes damage
                 // get damage value from collision
-                Debug.Log("damage dealt");
-                health.ChangeCurrent(-10);
+                health.ChangeCurrent(-25);
             }
         }
 
