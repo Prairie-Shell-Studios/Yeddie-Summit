@@ -340,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 198792081}
   - component: {fileID: 198792082}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneFar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -500,12 +500,12 @@ PrefabInstance:
     - target: {fileID: 2958438753590768878, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.00000005081012
+      value: -0.00000005081139
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753590768878, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -4.804632e-10
+      value: -4.8047527e-10
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753590768878, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
@@ -535,12 +535,12 @@ PrefabInstance:
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.000000086868134
+      value: -0.000000063930976
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 1.0327283e-10
+      value: 7.600307e-11
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
@@ -550,17 +550,17 @@ PrefabInstance:
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.001188845
+      value: 0.0011888293
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753839952447, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.000000050778315
+      value: -0.0000000507796
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753839952447, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0000000018603784
+      value: 0.0000000018604255
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753839952447, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
@@ -670,7 +670,7 @@ GameObject:
   m_Component:
   - component: {fileID: 377894101}
   - component: {fileID: 377894102}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneClose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -715,7 +715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 392646061}
   - component: {fileID: 392646062}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneCloseRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -947,7 +947,7 @@ GameObject:
   m_Component:
   - component: {fileID: 675110671}
   - component: {fileID: 675110672}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1026,7 +1026,7 @@ GameObject:
   m_Component:
   - component: {fileID: 773535493}
   - component: {fileID: 773535494}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneClosestRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1217,6 +1217,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3466087848092284592, guid: 38b44aa7598ea864bb16d7a4316773d2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38b44aa7598ea864bb16d7a4316773d2, type: 3}
 --- !u!4 &873302738 stripped
@@ -1225,6 +1230,41 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 873302737}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &885507446 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3466087847825274764, guid: 38b44aa7598ea864bb16d7a4316773d2,
+    type: 3}
+  m_PrefabInstance: {fileID: 873302737}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &885507453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885507446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91b270fd313040d47a2d0f16aafad64c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 256
+--- !u!136 &885507454
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885507446}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,7 +1376,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
-  m_LocalRotation: {x: 3.016061e-10, y: 0.99995977, z: 0.008974766, w: -0.00000003360466}
+  m_LocalRotation: {x: 3.0161185e-10, y: 0.99995977, z: 0.008974766, w: -0.0000000336053}
   m_LocalPosition: {x: 13.774102, y: 3.4833317, z: 1032.0104}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1422,7 +1462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1226654797}
   - component: {fileID: 1226654798}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneBottomClosest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1654,7 +1694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1378727071}
   - component: {fileID: 1378727072}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneClosestLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1699,7 +1739,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1541538114}
   - component: {fileID: 1541538115}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneCloseLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1908,7 +1948,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1662951974}
   - component: {fileID: 1662951975}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2083,7 +2123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1765395531}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: DestroyBoundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2164,7 +2204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1802286759}
   - component: {fileID: 1802286760}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: BoundaryPlaneRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
