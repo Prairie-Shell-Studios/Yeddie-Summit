@@ -20,3 +20,5 @@ MonoBehaviour:
   behaviourRate: 5
   fullEvent: {fileID: 0}
   emptyEvent: {fileID: 11400000, guid: c5dd3f5af8a23414fb392f36d309c92f, type: 2}
+  decreaseEvent: {fileID: 11400000, guid: 21ba58dc97d0d254ab6cb49f1aea33dd, type: 2}
+  increaseEvent: {fileID: 11400000, guid: 4539396801559594dbdfaaba3d547618, type: 2}

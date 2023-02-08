@@ -31,6 +31,8 @@ namespace PrairieShellStudios.Status
 
         [SerializeField] private GameEventScriptableObject fullEvent;
         [SerializeField] private GameEventScriptableObject emptyEvent;
+        [SerializeField] private GameEventScriptableObject decreaseEvent;
+        [SerializeField] private GameEventScriptableObject increaseEvent;
 
 
         #endregion
@@ -161,6 +163,8 @@ namespace PrairieShellStudios.Status
         /// Raise the appropriate event depending on the new state of the status.
         /// Raise fullEvent when current reaches max value.
         /// Raise emptyEvent when current reaches min value.
+        /// Raise decreaseEvent when value is less than current.
+        /// Raise increaseEvent when value is greater than current.
         /// </summary>
         /// <param name="value">The new value of current.</param>
         private void HandleEvents(int value)
@@ -172,6 +176,14 @@ namespace PrairieShellStudios.Status
             else if (emptyEvent != null && current > min && value <= min)
             {
                 emptyEvent.Raise();
+            }
+            else if (decreaseEvent != null && current < value)
+            {
+                decreaseEvent.Raise();
+            }
+            else if (increaseEvent != null && current > value)
+            {
+                increaseEvent.Raise();
             }
         }
 
