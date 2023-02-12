@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &328734967397038641
 Transform:
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2ef3e427da4123e4caf1aaa4f695b732, type: 2}
+  - {fileID: 2100000, guid: 41885bcc439083d47bfc4c4c2ac80dc3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,15 +98,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateOnStart: 1
-  width: 250
-  length: 250
-  heightRange: {x: 400, y: 455}
+  width: 1000
+  length: 1000
+  heightRange: {x: 350, y: 405}
   mountainResolution: 5
-  surfaceResolution: 25
+  surfaceResolution: 15
   hasNoise: 1
   scale: 0.02
-  noiseImpact: 10
-  clampedEdges: 0
+  noiseImpact: 5
+  clampedEdges: 1
   showBounds: 0
   pointSize: 10
 --- !u!64 &850600381282019874

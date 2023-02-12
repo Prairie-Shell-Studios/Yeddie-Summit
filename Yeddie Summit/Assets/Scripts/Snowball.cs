@@ -14,6 +14,7 @@ namespace PrairieShellStudios
         private SimpleTimer growthTimer;
         [SerializeField] [Min(0f)] private float growthRate = 5f;
         [SerializeField] [Min(0.01f)] private float growthInc = 0.1f;
+        [SerializeField] [Min(0.01f)] private float initialMass = 1f;
         [SerializeField] [Min(0.01f)] private float initialScale = 0.5f;
         [SerializeField] [Min(0.01f)] private float maxScale = 2f;
         private float currentScale;
@@ -40,6 +41,7 @@ namespace PrairieShellStudios
             {
                 transform.localScale = initialScale * Vector3.one;
                 currentScale = initialScale;
+                rb.mass = initialMass;
                 if (objectPooler == null)
                 {
                     Init();
@@ -194,6 +196,7 @@ namespace PrairieShellStudios
                     growthTimer.Reset();
                     currentScale += growthInc;
                     transform.localScale = currentScale * Vector3.one;
+                    rb.mass += growthInc;
                 }
             }
         }

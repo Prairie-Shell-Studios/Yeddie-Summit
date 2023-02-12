@@ -49,8 +49,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   delay: 1
-  width: 250
-  length: 250
+  width: 1000
+  length: 1000
   height: 250
   placeableObjects:
   - placeableObjects:
@@ -59,7 +59,7 @@ MonoBehaviour:
     minPerlinThreshold: 0.5
     maxPerlinThreshold: 1
     minHeight: 0
-    maxHeight: 150
+    maxHeight: 200
     density: 80
   noiseScale: 0.5
-  showBounds: 1
+  showBounds: 0

@@ -11,6 +11,13 @@ namespace PrairieShellStudios.Player
         #region fields
         private StatusHandler statusHandler;
         private StatusScriptableObject health;
+        public float mass = 1.0f;
+        public float damageModifier = 5f;
+        public float knockbackModifier = 25f;
+        [SerializeField] private float knockbackThreshold = 0.2f;
+        [SerializeField] private float knockbackDeteriorationRate = 5f;
+        private Vector3 impact = Vector3.zero;
+        private CharacterController controller;
         [SerializeField] private LayerMask damageMask;
         #endregion
 
@@ -18,6 +25,7 @@ namespace PrairieShellStudios.Player
 
         private void Awake() 
         {
+            controller = gameObject.GetComponent<CharacterController>();
             statusHandler = gameObject.GetComponent<StatusHandler>();
             if (statusHandler != null) 
             {
@@ -29,13 +37,30 @@ namespace PrairieShellStudios.Player
             }
         }
 
+        private void Update() 
+        {
+            // handles knockback deterioration
+            if (impact.magnitude > knockbackThreshold) 
+            {
+                controller.Move(impact * Time.deltaTime);
+            }
+            impact = Vector3.Lerp(impact, Vector3.zero, knockbackDeteriorationRate * Time.deltaTime);
+        }
+
         public void OnTriggerEnter(Collider other)
         {
             if (IsInLayerMask(other.gameObject, damageMask))
             {
-                // player takes damage
-                // get damage value from collision
-                health.ChangeCurrent(-25);
+                otherRB = other.rigidbody;
+                if (otherRB != null)
+                {
+                    otherMass = otherRB.mass;
+                    damage = -otherMass * damageModifier;
+                    force = otherMass * knockbackModifier; 
+                    health.ChangeCurrent(damage);
+                    Vector3 hitVector = transform.position - other.transform.position;
+                    AddImpact(hitVector.normalized, force);
+                }
             }
         }
 
@@ -48,6 +73,16 @@ namespace PrairieShellStudios.Player
             // TODO: Fix to check a LayerMask with multiple layers
             // TODO: Move to a utility class.
             return (mask & (1 << checkGO.layer)) != 0;
+        }
+
+        private void AddImpact(Vector3 direction, float force)
+        {
+            // add knockback
+            if (direction.y < 0f)
+            {
+                direction.y = -direction.y;
+            }
+            impact += direction * force / mass;
         }
 
         #endregion
