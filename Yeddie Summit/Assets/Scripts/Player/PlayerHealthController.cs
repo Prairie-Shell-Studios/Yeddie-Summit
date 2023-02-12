@@ -12,10 +12,10 @@ namespace PrairieShellStudios.Player
         private StatusHandler statusHandler;
         private StatusScriptableObject health;
         public float mass = 1.0f;
-        public float damageModifier = 5f;
+        public float damageModifier = 30f;
         public float knockbackModifier = 25f;
         [SerializeField] private float knockbackThreshold = 0.2f;
-        [SerializeField] private float knockbackDeteriorationRate = 5f;
+        [SerializeField] private float knockbackDeteriorationRate = 2.5f;
         private Vector3 impact = Vector3.zero;
         private CharacterController controller;
         [SerializeField] private LayerMask damageMask;
@@ -51,16 +51,12 @@ namespace PrairieShellStudios.Player
         {
             if (IsInLayerMask(other.gameObject, damageMask))
             {
-                otherRB = other.rigidbody;
-                if (otherRB != null)
-                {
-                    otherMass = otherRB.mass;
-                    damage = -otherMass * damageModifier;
-                    force = otherMass * knockbackModifier; 
-                    health.ChangeCurrent(damage);
-                    Vector3 hitVector = transform.position - other.transform.position;
-                    AddImpact(hitVector.normalized, force);
-                }
+                float otherScale = other.transform.localScale.x;
+                int damage = (int) -Mathf.Round(otherScale * damageModifier);
+                float force = otherScale * knockbackModifier; 
+                health.ChangeCurrent(damage);
+                Vector3 hitVector = transform.position - other.transform.position;
+                AddImpact(hitVector.normalized, force);
             }
         }
 
@@ -82,7 +78,7 @@ namespace PrairieShellStudios.Player
             {
                 direction.y = -direction.y;
             }
-            impact += direction * force / mass;
+            impact += (direction * force / mass);
         }
 
         #endregion

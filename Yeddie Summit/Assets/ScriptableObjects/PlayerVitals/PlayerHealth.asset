@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusName: PlayerHealth
   max: 100
-  current: 69
+  current: 96
   min: 0
   behaviour: 1
   behaviourRate: 5
