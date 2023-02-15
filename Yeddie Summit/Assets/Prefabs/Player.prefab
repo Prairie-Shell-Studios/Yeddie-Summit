@@ -302,6 +302,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b270fd313040d47a2d0f16aafad64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mass: 1
+  damageModifier: 25
+  knockbackModifier: 25
+  knockbackThreshold: 0.2
+  knockbackDeteriorationRate: 2.5
   damageMask:
     serializedVersion: 2
     m_Bits: 128

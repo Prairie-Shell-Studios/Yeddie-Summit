@@ -1161,14 +1161,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 922697705}
     m_Modifications:
-    - target: {fileID: 885507453, guid: 38b44aa7598ea864bb16d7a4316773d2, type: 3}
-      propertyPath: damageModifier
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 885507453, guid: 38b44aa7598ea864bb16d7a4316773d2, type: 3}
-      propertyPath: knockbackDeteriorationRate
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3466087847825274764, guid: 38b44aa7598ea864bb16d7a4316773d2,
         type: 3}
       propertyPath: m_Name
@@ -1555,12 +1547,12 @@ PrefabInstance:
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.000000027120173
+      value: 0.000000017178978
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0000000025785487
+      value: 0.0000000016333536
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
@@ -1570,7 +1562,7 @@ PrefabInstance:
     - target: {fileID: 2958438753802932088, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.09465176
+      value: -0.09465175
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753839952447, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
@@ -1580,12 +1572,12 @@ PrefabInstance:
     - target: {fileID: 2958438753839952447, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.000000017332585
+      value: 0.000000017309741
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753839952447, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0000000010301
+      value: 0.0000000010287424
       objectReference: {fileID: 0}
     - target: {fileID: 2958438753839952447, guid: 60c234251d6a54545aa57df1d2a050ee,
         type: 3}

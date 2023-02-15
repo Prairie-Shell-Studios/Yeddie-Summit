@@ -213,7 +213,12 @@ namespace PrairieShellStudios
                     newScale * Vector3.one
                     );
                 Vector3 hit = hitForce * (snowball.transform.position - transform.position);
-                snowball.GetComponent<Rigidbody>()?.AddForce(hit, ForceMode.Impulse);
+                hit += Vector3.Scale(rb.velocity, gameObject.transform.localScale);
+                Rigidbody snowball_rb = snowball.GetComponent<Rigidbody>();
+                snowball_rb?.AddForce(hit, ForceMode.Impulse);
+                // maintain some of the original velocity after collision
+                snowball_rb.velocity += (rb.velocity / 3f);
+                
             }
             OnObjectDespawn();
         }

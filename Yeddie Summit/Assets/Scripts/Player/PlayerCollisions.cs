@@ -6,7 +6,7 @@ namespace PrairieShellStudios.Player
     /// <summary>
     /// Controls the player health.
     /// </summary>
-    public class PlayerHealthController : MonoBehaviour
+    public class PlayerCollisions : MonoBehaviour
     {
         #region fields
         private StatusHandler statusHandler;
@@ -51,12 +51,14 @@ namespace PrairieShellStudios.Player
         {
             if (IsInLayerMask(other.gameObject, damageMask))
             {
+                // damage and knockback are scaled by snowball's scale
                 float otherScale = other.transform.localScale.x;
                 int damage = (int) -Mathf.Round(otherScale * damageModifier);
-                float force = otherScale * knockbackModifier; 
                 health.ChangeCurrent(damage);
+                // handle knock back
+                float force = otherScale * knockbackModifier; 
                 Vector3 hitVector = transform.position - other.transform.position;
-                AddImpact(hitVector.normalized, force);
+                impact += (hitVector.normalized * force / mass);
             }
         }
 
@@ -69,16 +71,6 @@ namespace PrairieShellStudios.Player
             // TODO: Fix to check a LayerMask with multiple layers
             // TODO: Move to a utility class.
             return (mask & (1 << checkGO.layer)) != 0;
-        }
-
-        private void AddImpact(Vector3 direction, float force)
-        {
-            // add knockback
-            if (direction.y < 0f)
-            {
-                direction.y = -direction.y;
-            }
-            impact += (direction * force / mass);
         }
 
         #endregion
