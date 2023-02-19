@@ -19,6 +19,7 @@ namespace PrairieShellStudios
         private float currentScale;
         [SerializeField] [Min(0.01f)] private float minSplitScale = 1.0f;
         [SerializeField] private LayerMask growthMask;
+        [SerializeField] private LayerMask splitMask;
         [SerializeField] private LayerMask destroyMask;
 
         [Header("Split Snowball Spawning")]
@@ -94,7 +95,7 @@ namespace PrairieShellStudios
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (IsInLayerMask(collision.gameObject, destroyMask))
+            if (IsInLayerMask(collision.gameObject, splitMask))
             {
                 // handle "prop" and "player" collisions
                 if (currentScale >= minSplitScale)
@@ -108,6 +109,11 @@ namespace PrairieShellStudios
                     // snowball is destroyed
                     OnObjectDespawn();
                 }
+            }
+            else if (IsInLayerMask(collision.gameObject, destroyMask))
+            {
+                // snowball is destroyed
+                OnObjectDespawn();
             }
         }
 
